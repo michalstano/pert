@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit
+  HostBinding
 } from '@angular/core';
 import { AoNData } from '../+state/sandbox.model';
 
@@ -20,9 +20,7 @@ import { AoNData } from '../+state/sandbox.model';
   styleUrls: ['./aon-block.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AonBlockComponent implements OnInit {
+export class AonBlockComponent {
   @Input() aonData?: AoNData;
-  constructor() {}
-
-  ngOnInit(): void {}
+  @HostBinding('class.selected') @Input() isSelected: boolean = false;
 }
