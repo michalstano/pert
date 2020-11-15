@@ -1,9 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { SvgIconsModule } from '@ngneat/svg-icon';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SandboxModule } from './sandbox/sandbox.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToolbarModule } from './toolbar/toolbar.module';
+import { appAghLogo } from '../assets/images/svg-compiled/svg/app-agh_logo.icon';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -11,7 +18,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     SandboxModule,
-    BrowserAnimationsModule
+    ToolbarModule,
+    BrowserAnimationsModule,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      name: 'PERT',
+      logOnly: environment.production
+    }),
+    EffectsModule.forRoot(),
+    SvgIconsModule.forRoot({
+      icons: [appAghLogo]
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

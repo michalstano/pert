@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "generate-icons": "svg-to-ts"
   },
   "husky": {
     "hooks": {
@@ -41,11 +41,20 @@
     "@angular/platform-browser": "~10.0.0",
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
+    "@ngneat/svg-icon": "^2.0.0",
+    "@ngrx/effects": "^10.0.1",
+    "@ngrx/entity": "^10.0.1",
+    "@ngrx/store": "^10.0.1",
+    "@ngrx/store-devtools": "^10.0.1",
     "@swimlane/ngx-graph": "^7.2.0",
     "@types/d3-dispatch": "^2.0.0",
     "@types/d3-drag": "^2.0.0",
+    "@types/d3-shape": "^2.0.0",
     "@types/d3-timer": "^2.0.0",
+    "@types/lodash": "^4.14.165",
+    "lodash": "^4.17.20",
     "rxjs": "~6.5.5",
+    "svg-to-ts": "^5.7.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },
@@ -64,5 +73,24 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.5"
+  },
+  "svg-to-ts": {
+    "generateType": "false",
+    "delimiter": "KEBAB",
+    "conversionType": "files",
+    "iconsFolderName": "svg",
+    "prefix": "app",
+    "srcFiles": [
+      "./src/assets/images/svg-src/*.svg"
+    ],
+    "outputDirectory": "./src/assets/images/svg-compiled",
+    "svgoConfig": {
+      "plugins": [
+        {
+          "removeDimensions": true,
+          "cleanupAttrs": true
+        }
+      ]
+    }
   }
 }
