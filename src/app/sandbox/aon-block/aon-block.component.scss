@@ -1,0 +1,53 @@
+:host {
+  display: grid;
+  grid-template-areas:
+    "earliest-start duration earliest-finish"
+    "name name name"
+    "latest-start float latest-finish";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  background-color: yellowgreen;
+  font-size: 10pt;
+
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.earliest-start {
+  grid-area: earliest-start;
+  border-right: var(--primary-border);
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.earliest-finish {
+  grid-area: earliest-finish;
+  border-left: var(--primary-border);
+}
+
+.name {
+  grid-area: name;
+  border-top: var(--primary-border);
+  border-bottom: var(--primary-border);
+}
+
+.latest-start {
+  grid-area: latest-start;
+  border-right: var(--primary-border);
+}
+
+.float {
+  grid-area: float;
+}
+
+.latest-finish {
+  grid-area: latest-finish;
+  border-left: var(--primary-border);
+}
