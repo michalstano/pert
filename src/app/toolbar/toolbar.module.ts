@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SvgIconsModule } from '@ngneat/svg-icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+
 @NgModule({
   declarations: [ToolbarComponent],
-  imports: [CommonModule, SvgIconsModule],
+  imports: [CommonModule, SvgIconsModule, MatIconModule, MatButtonModule],
   exports: [ToolbarComponent]
 })
 export class ToolbarModule {}

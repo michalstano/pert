@@ -7,3 +7,8 @@ export interface AoNData {
   float: number;
   latestFinish: number;
 }
+
+export interface ConnectionProcess {
+  firstId?: string;
+  secondId?: string;
+}

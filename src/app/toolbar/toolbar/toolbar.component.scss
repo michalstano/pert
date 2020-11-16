@@ -11,7 +11,7 @@
 .agh-logo {
   width: 5rem;
   height: 5rem;
-  padding: 1rem 0;
+  padding-top: 1rem;
 }
 
 .line {
@@ -19,4 +19,19 @@
   width: 80%;
   height: 1px;
   background-color: var(--light-border-color);
+  margin: 1rem 0;
+}
+
+button {
+  margin: 0.2rem 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: var(--text);
+
+  svg-icon,
+  msi-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: var(--text);
+  }
 }

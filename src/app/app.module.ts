@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { SandboxModule } from './sandbox/sandbox.module';
 import { ToolbarModule } from './toolbar/toolbar.module';
 import { appAghLogo } from '../assets/images/svg-compiled/svg/app-agh_logo.icon';
+import { appAddAonBlock } from '../assets/images/svg-compiled/svg/app-add_aon_block.icon';
+import { appRemoveAonBlock } from '../assets/images/svg-compiled/svg/app-remove_aon_block.icon';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -28,7 +30,7 @@ import { environment } from '../environments/environment';
     }),
     EffectsModule.forRoot(),
     SvgIconsModule.forRoot({
-      icons: [appAghLogo]
+      icons: [appAghLogo, appAddAonBlock, appRemoveAonBlock]
     })
   ],
   providers: [],

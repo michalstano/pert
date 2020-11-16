@@ -1,0 +1,27 @@
+// Small devices (to 750px)
+@media (max-width: 749.98px) {
+  html {
+    font-size: 9pt;
+  }
+}
+
+// Medium devices (tablets)
+@media (min-width: 750px) and (max-width: 991.98px) {
+  html {
+    font-size: 10pt;
+  }
+}
+
+// Large devices (desktops)
+@media (min-width: 992px) and (max-width: 1369.98px) {
+  html {
+    font-size: 11pt;
+  }
+}
+
+// Extra large devices (large desktops)
+@media (min-width: 1370px) {
+  html {
+    font-size: 12pt;
+  }
+}
