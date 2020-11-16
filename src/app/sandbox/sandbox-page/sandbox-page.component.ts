@@ -1,8 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  HostListener
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MiniMapPosition, Node, Edge } from '@swimlane/ngx-graph';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, take } from 'rxjs/operators';
 import { isEqual, cloneDeep } from 'lodash';
 import { SandboxActions } from '../+state/sandbox.actions';
 import { AoNData } from '../+state/sandbox.model';
@@ -32,6 +37,7 @@ import * as shape from 'd3-shape';
               aon-block
               [aonData]="aonDataMock"
               [isSelected]="(sandboxFacade.selectedNodeId$ | async) === node.id"
+              [isConnecting]="!!(sandboxFacade.connection$ | async)!"
             ></xhtml:div>
           </svg:foreignObject>
         </svg:g>
@@ -56,6 +62,14 @@ export class SandboxPageComponent implements OnInit {
 
   nodes$: Observable<Node[]>;
   links$: Observable<Edge[]>;
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownEscapeHandler(): void {
+    if (this.getIsConnecting()) {
+      this.store.dispatch(SandboxActions.revertConnectionOperation());
+    }
+  }
+
   constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
 
   ngOnInit(): void {
@@ -70,6 +84,14 @@ export class SandboxPageComponent implements OnInit {
   }
 
   selectNode(nodeId: string): void {
-    this.store.dispatch(SandboxActions.nodeSelected({ nodeId }));
+    this.store.dispatch(SandboxActions.nodeClicked({ nodeId }));
+  }
+
+  private getIsConnecting(): boolean {
+    let isConnecting: boolean;
+    this.sandboxFacade.connection$
+      .pipe(take(1))
+      .subscribe(connection => (isConnecting = !!connection));
+    return isConnecting!;
   }
 }

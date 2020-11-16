@@ -25,6 +25,10 @@
   &.selected {
     background-color: var(--selected);
   }
+
+  &.unused {
+    opacity: 0.3;
+  }
 }
 
 .earliest-start {
