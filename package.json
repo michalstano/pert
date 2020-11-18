@@ -52,13 +52,14 @@
     "@types/d3-drag": "^2.0.0",
     "@types/d3-shape": "^2.0.0",
     "@types/d3-timer": "^2.0.0",
+    "@types/dagre": "^0.7.44",
     "@types/lodash": "^4.14.165",
-    "@types/uuid": "^8.3.0",
+    "dagre": "^0.8.5",
     "lodash": "^4.17.20",
+    "nanoid": "^3.1.16",
     "rxjs": "~6.5.5",
     "svg-to-ts": "^5.7.1",
     "tslib": "^2.0.0",
-    "uuid": "^8.3.1",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
