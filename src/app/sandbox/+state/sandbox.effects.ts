@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { SandboxActions } from './sandbox.actions';
 import { SandboxFacade } from './sandbox.facade';
 
@@ -13,7 +13,6 @@ export class SandboxEffects {
       ofType(SandboxActions.nodeClicked),
       withLatestFrom(this.sandboxFacade.connection$),
       map(([{ nodeId }, connection]) => {
-        console.log('XD');
         if (connection?.firstId) {
           return SandboxActions.makeConnectionBetweenTwoNodes({
             connection: {

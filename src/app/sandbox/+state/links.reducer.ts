@@ -4,7 +4,7 @@ import { Edge } from '@swimlane/ngx-graph';
 import { ToolbarActions } from '../../toolbar/+state/toolbar.actions';
 import { SandboxActions } from './sandbox.actions';
 import { ConnectionProcess } from './sandbox.model';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from '../../shared/utils/id-generator';
 
 export const LINKS_FEATURE_KEY = 'links';
 
@@ -46,7 +46,7 @@ const reducer = createReducer(
     SandboxActions.makeConnectionBetweenTwoNodes,
     (state: LinksState, { connection }) => {
       const newLink = {
-        id: uuid(),
+        id: nanoid(),
         source: connection.firstId,
         target: connection.secondId,
         label: 'test'

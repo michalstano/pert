@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Node } from '@swimlane/ngx-graph';
 import { ConnectionProcess } from './sandbox.model';
 
 const nodeClicked = createAction(
@@ -9,6 +10,11 @@ const nodeClicked = createAction(
 const nodeSelected = createAction(
   '[Sandbox] Node selected',
   props<{ nodeId: string }>()
+);
+
+const nodeChanged = createAction(
+  '[Sandbox] Node position changed',
+  props<{ node: Node }>()
 );
 
 const revertConnectionOperation = createAction(
@@ -28,6 +34,7 @@ const makeConnectionBetweenTwoNodes = createAction(
 export const SandboxActions = {
   nodeClicked,
   nodeSelected,
+  nodeChanged,
   revertConnectionOperation,
   selectFirstNodeToConnection,
   makeConnectionBetweenTwoNodes

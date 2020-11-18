@@ -5,20 +5,28 @@ import {
   HostListener
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MiniMapPosition, Node, Edge } from '@swimlane/ngx-graph';
+import {
+  MiniMapPosition,
+  Node,
+  Edge,
+  NodePosition,
+  Layout
+} from '@swimlane/ngx-graph';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, take } from 'rxjs/operators';
 import { isEqual, cloneDeep } from 'lodash';
+import * as shape from 'd3-shape';
 import { SandboxActions } from '../+state/sandbox.actions';
 import { AoNData } from '../+state/sandbox.model';
 import { SandboxFacade } from '../+state/sandbox.facade';
-import * as shape from 'd3-shape';
+import { GraphLayout } from './graphLayout';
 
 @Component({
   selector: 'app-sandbox-page',
   template: `
     <ngx-graph
       class="chart-container"
+      [layout]="graphLayout"
       [showMiniMap]="true"
       [miniMapPosition]="MiniMapPosition.UpperRight"
       [curve]="shape.curveLinear"
@@ -31,6 +39,7 @@ import * as shape from 'd3-shape';
           width="122"
           height="80"
           (click)="selectNode(node.id)"
+          (mouseup)="nodePositionChanged(node.id, node.position)"
         >
           <svg:foreignObject width="122" height="80">
             <xhtml:div
@@ -49,6 +58,7 @@ import * as shape from 'd3-shape';
 })
 export class SandboxPageComponent implements OnInit {
   MiniMapPosition = MiniMapPosition;
+  graphLayout: Layout = new GraphLayout();
   shape = shape;
   aonDataMock = {
     earliestStart: 10,
@@ -85,6 +95,17 @@ export class SandboxPageComponent implements OnInit {
 
   selectNode(nodeId: string): void {
     this.store.dispatch(SandboxActions.nodeClicked({ nodeId }));
+  }
+
+  nodePositionChanged(nodeId: string, position: NodePosition): void {
+    this.store.dispatch(
+      SandboxActions.nodeChanged({
+        node: {
+          id: nodeId,
+          position
+        }
+      })
+    );
   }
 
   private getIsConnecting(): boolean {

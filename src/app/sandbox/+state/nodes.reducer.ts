@@ -3,7 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Node } from '@swimlane/ngx-graph';
 import { SandboxActions } from './sandbox.actions';
 import { ToolbarActions } from '../../toolbar/+state/toolbar.actions';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from '../../shared/utils/id-generator';
 
 export const NODES_FEATURE_KEY = 'nodes';
 
@@ -32,7 +32,7 @@ const reducer = createReducer(
   })),
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
-      id: uuid(),
+      id: nanoid(),
       label: 'NEW'
     } as Node;
     return adapter.addOne(newNode, {
@@ -45,7 +45,20 @@ const reducer = createReducer(
       ...state,
       selectedNodeId: null
     };
-  })
+  }),
+  on(SandboxActions.nodeChanged, (state: NodesState, { node }) =>
+    adapter.updateOne(
+      {
+        id: node.id,
+        changes: {
+          data: {
+            position: node.position
+          }
+        }
+      },
+      state
+    )
+  )
 );
 
 export function nodesReducer(
