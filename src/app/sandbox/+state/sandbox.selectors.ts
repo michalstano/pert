@@ -4,6 +4,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
+import { ConnectionProcess } from './sandbox.model';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
@@ -44,10 +45,17 @@ const selectConnection = createSelector(
   linksSelectors.connection
 );
 
+const selectIsConnectingById = ({ id }: { id: string }) =>
+  createSelector(
+    selectConnection,
+    (connection: ConnectionProcess | null) => connection?.firstId === id
+  );
+
 export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
   selectLinks,
   selectConnection,
-  selectNodeById
+  selectNodeById,
+  selectIsConnectingById
 };

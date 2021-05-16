@@ -53,7 +53,10 @@ const reducer = createReducer(
       } as Edge;
       return adapter.addOne(newLink, { ...state, connection: null });
     }
-  )
+  ),
+  on(SandboxActions.revertConnectionOperation, (state: LinksState) => {
+    return { ...state, connection: null };
+  })
 );
 
 export function linksReducer(

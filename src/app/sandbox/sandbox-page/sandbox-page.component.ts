@@ -47,7 +47,10 @@ import { GraphLayout } from './graphLayout';
               aon-block
               [aonData]="aonDataMock"
               [isSelected]="(sandboxFacade.selectedNodeId$ | async) === node.id"
-              [isConnecting]="!!(sandboxFacade.connection$ | async)!"
+              [isConnection]="!!(sandboxFacade.connection$ | async)!"
+              [isConnecting]="
+                sandboxFacade.getIsConnectingById(node.id) | async
+              "
             ></xhtml:div>
           </svg:foreignObject>
         </svg:g>

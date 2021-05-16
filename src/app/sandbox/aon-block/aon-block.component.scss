@@ -35,6 +35,11 @@
       opacity: 0.3;
     }
   }
+
+  &.selected-in-connection {
+    border-color: var(--selected);
+    border-width: 2px;
+  }
 }
 
 .earliest-start {

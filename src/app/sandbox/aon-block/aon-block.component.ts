@@ -23,10 +23,16 @@ import { AoNData } from '../+state/sandbox.model';
 export class AonBlockComponent {
   @Input() aonData?: AoNData;
   @Input() isConnecting: boolean = false;
+  @Input() isConnection: boolean = false;
   @HostBinding('class.selected') @Input() isSelected: boolean = false;
 
   @HostBinding('class.unused')
   public get isUnused(): boolean {
-    return this.isConnecting && !this.isSelected;
+    return this.isConnection && !this.isSelected;
+  }
+
+  @HostBinding('class.selected-in-connection')
+  public get isSelectedInConnection(): boolean {
+    return this.isConnecting;
   }
 }
