@@ -33,7 +33,8 @@ const reducer = createReducer(
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
       id: nanoid(),
-      label: 'NEW'
+      label: 'NEW',
+      data: {}
     } as Node;
     return adapter.addOne(newNode, {
       ...state,

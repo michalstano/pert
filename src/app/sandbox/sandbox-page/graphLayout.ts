@@ -57,25 +57,24 @@ export class GraphLayout implements Layout {
   public run(graph: Graph): Graph {
     this.createDagreGraph(graph);
     dagre.layout(this.dagreGraph);
-
     graph.edgeLabels = this.dagreGraph._edgeLabels;
-
     // tslint:disable-next-line: forin
     for (const dagreNodeId in this.dagreGraph._nodes) {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
       const node = graph.nodes.find(n => n.id === dagreNode.id);
+
       node.position = {
         x: dagreNode.data.position?.x || dagreNode.x,
         y: dagreNode.data.position?.y || dagreNode.y
       };
-
       node.dimension = {
         width: dagreNode.width,
         height: dagreNode.height
       };
-    }
-    for (const edge of graph.edges) {
-      this.updateEdge(graph, edge);
+
+      for (const edge of graph.edges) {
+        this.updateEdge(graph, edge);
+      }
     }
 
     return graph;
@@ -89,39 +88,18 @@ export class GraphLayout implements Layout {
         ? 'y'
         : 'x';
     const orderAxis: 'x' | 'y' = rankAxis === 'y' ? 'x' : 'y';
-    const rankDimension = rankAxis === 'y' ? 'height' : 'width';
-    // determine new arrow position
-    const dir =
-      sourceNode.position[rankAxis] <= targetNode.position[rankAxis] ? -1 : 1;
     const startingPoint = {
       [orderAxis]: sourceNode.position[orderAxis],
-      [rankAxis]:
-        sourceNode.position[rankAxis] -
-        dir * (sourceNode.dimension[rankDimension] / 2)
+      [rankAxis]: sourceNode.position[rankAxis]
     };
     const endingPoint = {
       [orderAxis]: targetNode.position[orderAxis],
-      [rankAxis]:
-        targetNode.position[rankAxis] +
-        dir * (targetNode.dimension[rankDimension] / 2)
+      [rankAxis]: targetNode.position[rankAxis]
     };
-
-    const curveDistance =
-      this.settings.curveDistance || this.defaultSettings.curveDistance;
     // generate new points
-    edge.points = [
-      startingPoint,
-      {
-        [rankAxis]: (startingPoint[rankAxis] + endingPoint[rankAxis]) / 2,
-        [orderAxis]: startingPoint[orderAxis]
-      },
-      {
-        [orderAxis]: endingPoint[orderAxis],
-        [rankAxis]: (startingPoint[rankAxis] + endingPoint[rankAxis]) / 2
-      },
-      endingPoint
-    ];
+    edge.points = [startingPoint, endingPoint];
     const edgeLabelId = `${edge.source}${EDGE_KEY_DELIM}${edge.target}${EDGE_KEY_DELIM}${DEFAULT_EDGE_NAME}`;
+
     const matchingEdgeLabel = graph.edgeLabels[edgeLabelId];
     if (matchingEdgeLabel) {
       matchingEdgeLabel.points = edge.points;
