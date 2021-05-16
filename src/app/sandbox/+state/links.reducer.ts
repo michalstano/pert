@@ -31,7 +31,7 @@ const reducer = createReducer(
     ...state,
     connection: {}
   })),
-  on(SandboxActions.revertConnectionOperation, (state: LinksState) => ({
+  on(SandboxActions.turnOffConnectionMode, (state: LinksState) => ({
     ...state,
     connection: null
   })),

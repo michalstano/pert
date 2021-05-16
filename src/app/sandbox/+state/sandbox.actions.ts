@@ -17,17 +17,23 @@ const nodeChanged = createAction(
   props<{ node: Node }>()
 );
 
+const turnOnConnectionMode = createAction('[Sandbox] Turn on connection mode');
+
+const turnOffConnectionMode = createAction(
+  '[Sandbox] Turn off connection mode'
+);
+
 const revertConnectionOperation = createAction(
-  '[Toolbar] Revert connection operation'
+  '[Sandbox] Revert connection operation'
 );
 
 const selectFirstNodeToConnection = createAction(
-  '[Toolbar] Select node to connection',
+  '[Sandbox] Select node to connection',
   props<{ nodeId: string }>()
 );
 
 const makeConnectionBetweenTwoNodes = createAction(
-  '[Toolbar] Make connection between two nodes',
+  '[Sandbox] Make connection between two nodes',
   props<{ connection: ConnectionProcess }>()
 );
 
@@ -37,5 +43,7 @@ export const SandboxActions = {
   nodeChanged,
   revertConnectionOperation,
   selectFirstNodeToConnection,
-  makeConnectionBetweenTwoNodes
+  makeConnectionBetweenTwoNodes,
+  turnOnConnectionMode,
+  turnOffConnectionMode
 };

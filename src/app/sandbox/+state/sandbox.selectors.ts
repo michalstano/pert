@@ -1,3 +1,5 @@
+import { Dictionary } from '@ngrx/entity';
+import { Node } from '@swimlane/ngx-graph';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
@@ -24,6 +26,17 @@ const selectSelectedNodeId = createSelector(
 
 const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
 
+const selectNodeEntities = createSelector(
+  selectNodesState,
+  nodesSelectors.selectEntities
+);
+
+const selectNodeById = ({ id }: { id: string }) =>
+  createSelector(
+    selectNodeEntities,
+    (entities: Dictionary<Node>) => entities[id] || null
+  );
+
 const selectLinks = createSelector(selectLinksState, linksSelectors.selectAll);
 
 const selectConnection = createSelector(
@@ -35,5 +48,6 @@ export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
   selectLinks,
-  selectConnection
+  selectConnection,
+  selectNodeById
 };

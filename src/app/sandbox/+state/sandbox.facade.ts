@@ -9,8 +9,6 @@ import { SandboxSelectors } from './sandbox.selectors';
   providedIn: 'root'
 })
 export class SandboxFacade {
-  constructor(private store: Store<any>) {}
-
   nodes$: Observable<Node[]> = this.store.select(SandboxSelectors.selectNodes);
   selectedNodeId$: Observable<string | null> = this.store.select(
     SandboxSelectors.selectSelectedNodeId
@@ -20,4 +18,10 @@ export class SandboxFacade {
   connection$: Observable<ConnectionProcess | null> = this.store.select(
     SandboxSelectors.selectConnection
   );
+
+  constructor(private store: Store<any>) {}
+
+  getNodeById(nodeId: string): Observable<Node | null> {
+    return this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));
+  }
 }

@@ -13,7 +13,7 @@ import {
   Layout
 } from '@swimlane/ngx-graph';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, take } from 'rxjs/operators';
 import { isEqual, cloneDeep } from 'lodash';
 import * as shape from 'd3-shape';
 import { SandboxActions } from '../+state/sandbox.actions';
@@ -40,6 +40,7 @@ import { GraphLayout } from './graphLayout';
           height="80"
           (click)="selectNode(node.id)"
           (mouseup)="nodePositionChanged(node.id, node.position)"
+          (dblclick)="$event.preventDefault(); $event.stopPropagation()"
         >
           <svg:foreignObject width="122" height="80">
             <xhtml:div
@@ -51,6 +52,26 @@ import { GraphLayout } from './graphLayout';
           </svg:foreignObject>
         </svg:g>
       </ng-template>
+
+      <!-- <ng-template #linkTemplate let-link>
+        <svg:g class="edge">
+          <svg:path
+            class="line"
+            stroke-width="2"
+            marker-end="url(#arrow)"
+          ></svg:path>
+          <svg:text class="edge-label" text-anchor="middle">
+            <textPath
+              class="text-path"
+              [attr.href]="'#' + link.id"
+              [style.dominant-baseline]="link.dominantBaseline"
+              startOffset="50%"
+            >
+              {{ link.label }}
+            </textPath>
+          </svg:text>
+        </svg:g>
+      </ng-template> -->
     </ngx-graph>
   `,
   styleUrls: ['./sandbox-page.component.scss'],
@@ -98,14 +119,24 @@ export class SandboxPageComponent implements OnInit {
   }
 
   nodePositionChanged(nodeId: string, position: NodePosition): void {
-    this.store.dispatch(
-      SandboxActions.nodeChanged({
-        node: {
-          id: nodeId,
-          position
+    this.sandboxFacade
+      .getNodeById(nodeId)
+      .pipe(
+        filter(v => !!v),
+        take(1)
+      )
+      .subscribe(node => {
+        if (!isEqual(node.data?.position, position)) {
+          this.store.dispatch(
+            SandboxActions.nodeChanged({
+              node: {
+                id: nodeId,
+                position
+              }
+            })
+          );
         }
-      })
-    );
+      });
   }
 
   private getIsConnecting(): boolean {
