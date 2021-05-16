@@ -34,7 +34,17 @@ const reducer = createReducer(
     const newNode = {
       id: nanoid(),
       label: 'NEW',
-      data: {}
+      data: {
+        aonData: {
+          earliestStart: 0,
+          duration: 0,
+          earliestFinish: 0,
+          name: 'test123',
+          latestStart: 0,
+          float: 0,
+          latestFinish: 0
+        }
+      }
     } as Node;
     return adapter.addOne(newNode, {
       ...state,
@@ -47,19 +57,21 @@ const reducer = createReducer(
       selectedNodeId: null
     };
   }),
-  on(SandboxActions.nodeChanged, (state: NodesState, { node }) =>
-    adapter.updateOne(
+  on(SandboxActions.nodeChanged, (state: NodesState, { node }) => {
+    const entity = state.entities[node.id];
+    return adapter.updateOne(
       {
         id: node.id,
         changes: {
           data: {
+            ...entity.data,
             position: node.position
           }
         }
       },
       state
-    )
-  )
+    );
+  })
 );
 
 export function nodesReducer(
