@@ -59,7 +59,7 @@ import { GraphLayout } from './graphLayout';
           </svg:foreignObject>
         </svg:g>
       </ng-template>
-
+      <!-- link template. remove if necessery -->
       <!-- <ng-template #linkTemplate let-link>
         <svg:g class="edge">
           <svg:path
