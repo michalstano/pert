@@ -11,9 +11,20 @@ export class SandboxEffects {
   handleClickOnNode = createEffect(() => () =>
     this.actions.pipe(
       ofType(SandboxActions.nodeClicked),
-      withLatestFrom(this.sandboxFacade.connection$),
-      map(([{ nodeId }, connection]) => {
-        if (connection?.firstId) {
+      withLatestFrom(
+        this.sandboxFacade.connection$,
+        this.sandboxFacade.selectedNodeId$,
+        ({ nodeId }, connection, selectedNodeId) => ({
+          nodeId,
+          connection,
+          isSelected: selectedNodeId === nodeId
+        })
+      ),
+      filter(({ connection, isSelected }) => !!connection || !isSelected),
+      map(({ nodeId, connection, isSelected }) => {
+        const isAbleToMakeConnection =
+          connection?.firstId && connection?.firstId !== nodeId;
+        if (isAbleToMakeConnection) {
           return SandboxActions.makeConnectionBetweenTwoNodes({
             connection: {
               firstId: connection!.firstId,
@@ -24,8 +35,23 @@ export class SandboxEffects {
         if (!!connection) {
           return SandboxActions.selectFirstNodeToConnection({ nodeId });
         }
-        return SandboxActions.nodeSelected({ nodeId });
+
+        if (!isSelected) {
+          return SandboxActions.nodeSelected({ nodeId });
+        }
       })
+    )
+  );
+
+  handleDoubleClickOnNode = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(SandboxActions.nodeDoubleClicked),
+      withLatestFrom(
+        this.sandboxFacade.isConnectionMode$,
+        ({ nodeId }, isConnectionMode) => ({ nodeId, isConnectionMode })
+      ),
+      filter(({ isConnectionMode }) => !isConnectionMode),
+      map(({ nodeId }) => SandboxActions.nodeEntered({ nodeId }))
     )
   );
 }

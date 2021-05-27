@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { A11yModule } from '@angular/cdk/a11y';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -14,7 +15,8 @@ import { SandboxEffects } from './+state/sandbox.effects';
     CommonModule,
     NgxGraphModule,
     StoreModule.forFeature(SANDBOX_FEATURE_KEY, sandboxReducers),
-    EffectsModule.forFeature([SandboxEffects])
+    EffectsModule.forFeature([SandboxEffects]),
+    A11yModule
   ],
   exports: [SandboxPageComponent]
 })

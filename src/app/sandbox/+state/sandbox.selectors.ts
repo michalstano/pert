@@ -4,10 +4,13 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
+import { ConnectionProcess } from './sandbox.model';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
 );
+
+/* states */
 
 const selectNodesState = createSelector(
   selectSandboxState,
@@ -19,12 +22,19 @@ const selectLinksState = createSelector(
   (state: SandboxState) => state.links
 );
 
+/* nodes */
+
+const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
+
 const selectSelectedNodeId = createSelector(
   selectNodesState,
   nodesSelectors.selectedNodeId
 );
 
-const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
+const selectEditedNodeId = createSelector(
+  selectNodesState,
+  nodesSelectors.editedNodeId
+);
 
 const selectNodeEntities = createSelector(
   selectNodesState,
@@ -37,6 +47,13 @@ const selectNodeById = ({ id }: { id: string }) =>
     (entities: Dictionary<Node>) => entities[id] || null
   );
 
+const selectIsEditMode = createSelector(
+  selectEditedNodeId,
+  (nodeId: string) => !!nodeId
+);
+
+/* links */
+
 const selectLinks = createSelector(selectLinksState, linksSelectors.selectAll);
 
 const selectConnection = createSelector(
@@ -44,10 +61,25 @@ const selectConnection = createSelector(
   linksSelectors.connection
 );
 
+const selectIsConnectionMode = createSelector(
+  selectConnection,
+  (connection: ConnectionProcess) => !!connection
+);
+
+const selectIsConnectingById = ({ id }: { id: string }) =>
+  createSelector(
+    selectConnection,
+    (connection: ConnectionProcess | null) => connection?.firstId === id
+  );
+
 export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
+  selectEditedNodeId,
+  selectIsEditMode,
   selectLinks,
   selectConnection,
-  selectNodeById
+  selectIsConnectionMode,
+  selectNodeById,
+  selectIsConnectingById
 };

@@ -35,6 +35,16 @@
       opacity: 0.3;
     }
   }
+
+  &.selected-in-connection {
+    border-color: var(--selected);
+    border-width: 2px;
+  }
+
+  &.edit {
+    border-color: red;
+    border-width: 2px;
+  }
 }
 
 .earliest-start {
@@ -69,4 +79,21 @@
 .latest-finish {
   grid-area: latest-finish;
   border-left: var(--primary-border);
+}
+
+input {
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+
+  &:read-only {
+    user-select: none;
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    color: initial;
+  }
 }

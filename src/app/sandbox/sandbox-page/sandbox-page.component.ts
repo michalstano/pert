@@ -17,7 +17,6 @@ import { distinctUntilChanged, filter, map, take } from 'rxjs/operators';
 import { isEqual, cloneDeep } from 'lodash';
 import * as shape from 'd3-shape';
 import { SandboxActions } from '../+state/sandbox.actions';
-import { AoNData } from '../+state/sandbox.model';
 import { SandboxFacade } from '../+state/sandbox.facade';
 import { GraphLayout } from './graphLayout';
 
@@ -38,16 +37,24 @@ import { GraphLayout } from './graphLayout';
           class="node"
           width="122"
           height="80"
-          (click)="selectNode(node.id)"
+          (click)="dispatchClick(node.id)"
+          (dblclick)="dispatchDoubleClick(node.id)"
           (mouseup)="nodePositionChanged(node.id, node.position)"
-          (dblclick)="$event.preventDefault(); $event.stopPropagation()"
         >
           <svg:foreignObject width="122" height="80">
             <xhtml:div
               aon-block
-              [aonData]="aonDataMock"
+              cdkTrapFocus
+              [cdkTrapFocusAutoCapture]="true"
+              [aonData]="node.data?.aonData"
               [isSelected]="(sandboxFacade.selectedNodeId$ | async) === node.id"
-              [isConnecting]="!!(sandboxFacade.connection$ | async)!"
+              [isBeingEdited]="
+                (sandboxFacade.editedNodeId$ | async) === node.id
+              "
+              [isConnectionMode]="sandboxFacade.isConnectionMode$ | async"
+              [isSelectedInConnectionMode]="
+                sandboxFacade.getIsConnectingById(node.id) | async
+              "
             ></xhtml:div>
           </svg:foreignObject>
         </svg:g>
@@ -81,24 +88,14 @@ export class SandboxPageComponent implements OnInit {
   MiniMapPosition = MiniMapPosition;
   graphLayout: Layout = new GraphLayout();
   shape = shape;
-  aonDataMock = {
-    earliestStart: 10,
-    duration: 20,
-    earliestFinish: 30,
-    name: 'name',
-    latestStart: 40,
-    float: 0,
-    latestFinish: 50
-  } as AoNData;
 
   nodes$: Observable<Node[]>;
   links$: Observable<Edge[]>;
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownEscapeHandler(): void {
-    if (this.getIsConnecting()) {
-      this.store.dispatch(SandboxActions.revertConnectionOperation());
-    }
+    this.handleConnectionExit();
+    this.handleEditExit();
   }
 
   constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
@@ -114,8 +111,12 @@ export class SandboxPageComponent implements OnInit {
     );
   }
 
-  selectNode(nodeId: string): void {
+  dispatchClick(nodeId: string): void {
     this.store.dispatch(SandboxActions.nodeClicked({ nodeId }));
+  }
+
+  dispatchDoubleClick(nodeId: string): void {
+    this.store.dispatch(SandboxActions.nodeDoubleClicked({ nodeId }));
   }
 
   nodePositionChanged(nodeId: string, position: NodePosition): void {
@@ -139,11 +140,23 @@ export class SandboxPageComponent implements OnInit {
       });
   }
 
-  private getIsConnecting(): boolean {
-    let isConnecting: boolean;
-    this.sandboxFacade.connection$
-      .pipe(take(1))
-      .subscribe(connection => (isConnecting = !!connection));
-    return isConnecting!;
+  private handleConnectionExit(): void {
+    this.sandboxFacade.isConnectionMode$
+      .pipe(
+        take(1),
+        filter(isConnectionMode => isConnectionMode)
+      )
+      .subscribe(() =>
+        this.store.dispatch(SandboxActions.revertConnectionOperation())
+      );
+  }
+
+  private handleEditExit(): void {
+    this.sandboxFacade.isEditMode$
+      .pipe(
+        take(1),
+        filter(isEditMode => isEditMode)
+      )
+      .subscribe(() => this.store.dispatch(SandboxActions.nodeEditExited()));
   }
 }

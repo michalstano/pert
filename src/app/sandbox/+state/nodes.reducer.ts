@@ -13,15 +13,18 @@ export const adapter: EntityAdapter<Node> = createEntityAdapter<Node>({
 
 export interface NodesState extends EntityState<Node> {
   selectedNodeId: string | null;
+  editedNodeId: string | null;
 }
 
 export const nodesSelectors = {
   ...adapter.getSelectors(),
-  selectedNodeId: (state: NodesState) => state.selectedNodeId
+  selectedNodeId: (state: NodesState) => state.selectedNodeId,
+  editedNodeId: (state: NodesState) => state.editedNodeId
 };
 
 export const nodesInitialState: NodesState = adapter.getInitialState({
-  selectedNodeId: null
+  selectedNodeId: null,
+  editedNodeId: null
 });
 
 const reducer = createReducer(
@@ -30,11 +33,29 @@ const reducer = createReducer(
     ...state,
     selectedNodeId: nodeId
   })),
+  on(SandboxActions.nodeEntered, (state: NodesState, { nodeId }) => ({
+    ...state,
+    editedNodeId: nodeId
+  })),
+  on(SandboxActions.nodeEditExited, (state: NodesState) => ({
+    ...state,
+    editedNodeId: null
+  })),
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
       id: nanoid(),
       label: 'NEW',
-      data: {}
+      data: {
+        aonData: {
+          earliestStart: 0,
+          duration: 0,
+          earliestFinish: 0,
+          name: 'test123',
+          latestStart: 0,
+          float: 0,
+          latestFinish: 0
+        }
+      }
     } as Node;
     return adapter.addOne(newNode, {
       ...state,
@@ -47,19 +68,21 @@ const reducer = createReducer(
       selectedNodeId: null
     };
   }),
-  on(SandboxActions.nodeChanged, (state: NodesState, { node }) =>
-    adapter.updateOne(
+  on(SandboxActions.nodeChanged, (state: NodesState, { node }) => {
+    const entity = state.entities[node.id];
+    return adapter.updateOne(
       {
         id: node.id,
         changes: {
           data: {
+            ...entity.data,
             position: node.position
           }
         }
       },
       state
-    )
-  )
+    );
+  })
 );
 
 export function nodesReducer(
