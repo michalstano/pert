@@ -10,6 +10,8 @@ const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
 );
 
+/* states */
+
 const selectNodesState = createSelector(
   selectSandboxState,
   (state: SandboxState) => state.nodes
@@ -20,12 +22,19 @@ const selectLinksState = createSelector(
   (state: SandboxState) => state.links
 );
 
+/* nodes */
+
+const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
+
 const selectSelectedNodeId = createSelector(
   selectNodesState,
   nodesSelectors.selectedNodeId
 );
 
-const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
+const selectEditedNodeId = createSelector(
+  selectNodesState,
+  nodesSelectors.editedNodeId
+);
 
 const selectNodeEntities = createSelector(
   selectNodesState,
@@ -38,11 +47,23 @@ const selectNodeById = ({ id }: { id: string }) =>
     (entities: Dictionary<Node>) => entities[id] || null
   );
 
+const selectIsEditMode = createSelector(
+  selectEditedNodeId,
+  (nodeId: string) => !!nodeId
+);
+
+/* links */
+
 const selectLinks = createSelector(selectLinksState, linksSelectors.selectAll);
 
 const selectConnection = createSelector(
   selectLinksState,
   linksSelectors.connection
+);
+
+const selectIsConnectionMode = createSelector(
+  selectConnection,
+  (connection: ConnectionProcess) => !!connection
 );
 
 const selectIsConnectingById = ({ id }: { id: string }) =>
@@ -54,8 +75,11 @@ const selectIsConnectingById = ({ id }: { id: string }) =>
 export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
+  selectEditedNodeId,
+  selectIsEditMode,
   selectLinks,
   selectConnection,
+  selectIsConnectionMode,
   selectNodeById,
   selectIsConnectingById
 };

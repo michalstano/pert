@@ -4,7 +4,6 @@ import { Edge } from '@swimlane/ngx-graph';
 import { ToolbarActions } from '../../toolbar/+state/toolbar.actions';
 import { SandboxActions } from './sandbox.actions';
 import { ConnectionProcess } from './sandbox.model';
-import { nanoid } from '../../shared/utils/id-generator';
 
 export const LINKS_FEATURE_KEY = 'links';
 
@@ -46,12 +45,12 @@ const reducer = createReducer(
     SandboxActions.makeConnectionBetweenTwoNodes,
     (state: LinksState, { connection }) => {
       const newLink = {
-        id: nanoid(),
+        id: connection.firstId + '-' + connection.secondId,
         source: connection.firstId,
         target: connection.secondId,
         label: 'test'
       } as Edge;
-      return adapter.addOne(newLink, { ...state, connection: null });
+      return adapter.upsertOne(newLink, { ...state, connection: null });
     }
   ),
   on(SandboxActions.revertConnectionOperation, (state: LinksState) => {

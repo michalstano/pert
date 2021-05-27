@@ -13,15 +13,18 @@ export const adapter: EntityAdapter<Node> = createEntityAdapter<Node>({
 
 export interface NodesState extends EntityState<Node> {
   selectedNodeId: string | null;
+  editedNodeId: string | null;
 }
 
 export const nodesSelectors = {
   ...adapter.getSelectors(),
-  selectedNodeId: (state: NodesState) => state.selectedNodeId
+  selectedNodeId: (state: NodesState) => state.selectedNodeId,
+  editedNodeId: (state: NodesState) => state.editedNodeId
 };
 
 export const nodesInitialState: NodesState = adapter.getInitialState({
-  selectedNodeId: null
+  selectedNodeId: null,
+  editedNodeId: null
 });
 
 const reducer = createReducer(
@@ -29,6 +32,14 @@ const reducer = createReducer(
   on(SandboxActions.nodeSelected, (state: NodesState, { nodeId }) => ({
     ...state,
     selectedNodeId: nodeId
+  })),
+  on(SandboxActions.nodeEntered, (state: NodesState, { nodeId }) => ({
+    ...state,
+    editedNodeId: nodeId
+  })),
+  on(SandboxActions.nodeEditExited, (state: NodesState) => ({
+    ...state,
+    editedNodeId: null
   })),
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
