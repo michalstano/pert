@@ -28,4 +28,4 @@ jobs:
           ftp-password: ${{ secrets.FTP_DEV_PASSWORD }}
           log-level: verbose
           local-dir: dist/pert
-          git-ftp-args: --remote-root domains/dev.pert.mstano.eu/public_html/
+          git-ftp-args: --remote-root domains/dev.pert.mstano.eu/public_html
