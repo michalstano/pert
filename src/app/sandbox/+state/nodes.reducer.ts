@@ -44,18 +44,7 @@ const reducer = createReducer(
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
       id: nanoid(),
-      label: 'NEW',
-      data: {
-        aonData: {
-          earliestStart: 0,
-          duration: 0,
-          earliestFinish: 0,
-          name: 'test123',
-          latestStart: 0,
-          float: 0,
-          latestFinish: 0
-        }
-      }
+      label: 'NEW'
     } as Node;
     return adapter.addOne(newNode, {
       ...state,
@@ -68,7 +57,7 @@ const reducer = createReducer(
       selectedNodeId: null
     };
   }),
-  on(SandboxActions.nodeChanged, (state: NodesState, { node }) => {
+  on(SandboxActions.nodePositionChanged, (state: NodesState, { node }) => {
     const entity = state.entities[node.id];
     return adapter.updateOne(
       {
@@ -82,7 +71,25 @@ const reducer = createReducer(
       },
       state
     );
-  })
+  }),
+  on(
+    SandboxActions.nodeValueChanged,
+    (state: NodesState, { nodeId, aonData }) => {
+      const entity = state.entities[nodeId];
+      return adapter.updateOne(
+        {
+          id: nodeId,
+          changes: {
+            data: {
+              ...entity.data,
+              aonData
+            }
+          }
+        },
+        state
+      );
+    }
+  )
 );
 
 export function nodesReducer(

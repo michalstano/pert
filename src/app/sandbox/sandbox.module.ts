@@ -4,19 +4,23 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SandboxPageComponent } from './sandbox-page/sandbox-page.component';
-import { AonBlockComponent } from './aon-block/aon-block.component';
+import { AonNodeComponent } from './aon-node/aon-node.component';
 import { SANDBOX_FEATURE_KEY, sandboxReducers } from './+state/sandbox.reducer';
 import { SandboxEffects } from './+state/sandbox.effects';
+import { DisableControlModule } from '../shared/directives/disable-control/disable-control.module';
 
 @NgModule({
-  declarations: [SandboxPageComponent, AonBlockComponent],
+  declarations: [SandboxPageComponent, AonNodeComponent],
   imports: [
     CommonModule,
     NgxGraphModule,
     StoreModule.forFeature(SANDBOX_FEATURE_KEY, sandboxReducers),
     EffectsModule.forFeature([SandboxEffects]),
-    A11yModule
+    ReactiveFormsModule,
+    A11yModule,
+    DisableControlModule
   ],
   exports: [SandboxPageComponent]
 })
