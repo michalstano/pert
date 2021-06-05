@@ -42,7 +42,7 @@
     "@angular/platform-browser": "~10.0.0",
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
-    "@ngneat/reactive-forms": "^1.7.3",
+    "@ngneat/reactive-forms": "1.7.2",
     "@ngneat/svg-icon": "^2.0.0",
     "@ngrx/effects": "^10.0.1",
     "@ngrx/entity": "^10.0.1",

@@ -19,6 +19,7 @@ import * as shape from 'd3-shape';
 import { SandboxActions } from '../+state/sandbox.actions';
 import { SandboxFacade } from '../+state/sandbox.facade';
 import { GraphLayout } from './graphLayout';
+import { AoNData } from '../+state/sandbox.model';
 
 @Component({
   selector: 'app-sandbox-page',
@@ -43,7 +44,7 @@ import { GraphLayout } from './graphLayout';
         >
           <svg:foreignObject width="122" height="80">
             <xhtml:div
-              aon-block
+              aon-node
               cdkTrapFocus
               [cdkTrapFocusAutoCapture]="true"
               [aonData]="node.data?.aonData"
@@ -55,6 +56,7 @@ import { GraphLayout } from './graphLayout';
               [isSelectedInConnectionMode]="
                 sandboxFacade.getIsConnectingById(node.id) | async
               "
+              (valueChanges)="updateNodeValue(node.id, $event)"
             ></xhtml:div>
           </svg:foreignObject>
         </svg:g>
@@ -129,7 +131,7 @@ export class SandboxPageComponent implements OnInit {
       .subscribe(node => {
         if (!isEqual(node.data?.position, position)) {
           this.store.dispatch(
-            SandboxActions.nodeChanged({
+            SandboxActions.nodePositionChanged({
               node: {
                 id: nodeId,
                 position
@@ -138,6 +140,10 @@ export class SandboxPageComponent implements OnInit {
           );
         }
       });
+  }
+
+  updateNodeValue(nodeId: string, aonData: AoNData): void {
+    this.store.dispatch(SandboxActions.nodeValueChanged({ nodeId, aonData }));
   }
 
   private handleConnectionExit(): void {

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Node } from '@swimlane/ngx-graph';
-import { ConnectionProcess } from './sandbox.model';
+import { AoNData, ConnectionProcess } from './sandbox.model';
 
 const nodeClicked = createAction(
   '[Sandbox] Node clicked',
@@ -22,12 +22,17 @@ const nodeEntered = createAction(
   props<{ nodeId: string }>()
 );
 
-const nodeChanged = createAction(
+const nodePositionChanged = createAction(
   '[Sandbox] Node position changed',
   props<{ node: Node }>()
 );
 
 const nodeEditExited = createAction('[Sandbox] Node Edit exited');
+
+const nodeValueChanged = createAction(
+  '[Sandbox] Node value changed',
+  props<{ nodeId: string; aonData: AoNData }>()
+);
 
 const turnOnConnectionMode = createAction('[Sandbox] Turn on connection mode');
 
@@ -54,8 +59,9 @@ export const SandboxActions = {
   nodeDoubleClicked,
   nodeSelected,
   nodeEntered,
-  nodeChanged,
+  nodePositionChanged,
   nodeEditExited,
+  nodeValueChanged,
   revertConnectionOperation,
   selectFirstNodeToConnection,
   makeConnectionBetweenTwoNodes,
