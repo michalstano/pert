@@ -17,6 +17,8 @@ const nodeSelected = createAction(
   props<{ nodeId: string }>()
 );
 
+const nodeSelectionExited = createAction('[Sandbox] Node selection exited');
+
 const nodeEntered = createAction(
   '[Sandbox] Node entered',
   props<{ nodeId: string }>()
@@ -54,10 +56,13 @@ const makeConnectionBetweenTwoNodes = createAction(
   props<{ connection: ConnectionProcess }>()
 );
 
+const escapeClicked = createAction('[Sandobox] Escape clicked');
+
 export const SandboxActions = {
   nodeClicked,
   nodeDoubleClicked,
   nodeSelected,
+  nodeSelectionExited,
   nodeEntered,
   nodePositionChanged,
   nodeEditExited,
@@ -66,5 +71,6 @@ export const SandboxActions = {
   selectFirstNodeToConnection,
   makeConnectionBetweenTwoNodes,
   turnOnConnectionMode,
-  turnOffConnectionMode
+  turnOffConnectionMode,
+  escapeClicked
 };

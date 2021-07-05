@@ -1,0 +1,22 @@
+input {
+  width: 100%;
+  height: calc(100% - 2px);
+  background-color: transparent;
+  outline: none;
+  border: none;
+  text-align: center;
+
+  &:read-only {
+    user-select: none;
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    color: initial;
+  }
+
+  &.invalid {
+    background-color: var(--invalid-background);
+  }
+}

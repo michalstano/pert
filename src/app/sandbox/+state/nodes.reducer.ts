@@ -33,6 +33,10 @@ const reducer = createReducer(
     ...state,
     selectedNodeId: nodeId
   })),
+  on(SandboxActions.nodeSelectionExited, (state: NodesState) => ({
+    ...state,
+    selectedNodeId: null
+  })),
   on(SandboxActions.nodeEntered, (state: NodesState, { nodeId }) => ({
     ...state,
     editedNodeId: nodeId

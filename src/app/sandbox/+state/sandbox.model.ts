@@ -12,3 +12,10 @@ export interface ConnectionProcess {
   firstId?: string;
   secondId?: string;
 }
+
+export enum EscapeEvent {
+  connectionMode = 'CONNECTION_MODE',
+  editMode = 'EDIT_MODE',
+  selectionMode = 'SELECTION_MODE',
+  empty = 'EMPTY'
+}

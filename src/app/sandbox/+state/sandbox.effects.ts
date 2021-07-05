@@ -3,6 +3,7 @@ import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { SandboxActions } from './sandbox.actions';
 import { SandboxFacade } from './sandbox.facade';
+import { EscapeEvent } from './sandbox.model';
 
 @Injectable()
 export class SandboxEffects {
@@ -52,6 +53,28 @@ export class SandboxEffects {
       ),
       filter(({ isConnectionMode }) => !isConnectionMode),
       map(({ nodeId }) => SandboxActions.nodeEntered({ nodeId }))
+    )
+  );
+
+  handleEscapeClick = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(SandboxActions.escapeClicked),
+      withLatestFrom(
+        this.sandboxFacade.escapeEvent$,
+        (_, escapeEvent: EscapeEvent) => escapeEvent
+      ),
+      filter(event => event !== EscapeEvent.empty),
+      map(event => {
+        if (event === EscapeEvent.connectionMode) {
+          return SandboxActions.revertConnectionOperation();
+        }
+        if (event === EscapeEvent.editMode) {
+          return SandboxActions.nodeEditExited();
+        }
+        if (event === EscapeEvent.selectionMode) {
+          return SandboxActions.nodeSelectionExited();
+        }
+      })
     )
   );
 }

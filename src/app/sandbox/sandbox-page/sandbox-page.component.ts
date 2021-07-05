@@ -30,6 +30,7 @@ import { AoNData } from '../+state/sandbox.model';
       [showMiniMap]="true"
       [miniMapPosition]="MiniMapPosition.UpperRight"
       [curve]="shape.curveLinear"
+      [draggingEnabled]="!(sandboxFacade.isEditMode$ | async)"
       [nodes]="(nodes$ | async)!"
       [links]="(links$ | async)!"
     >
@@ -96,8 +97,7 @@ export class SandboxPageComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownEscapeHandler(): void {
-    this.handleConnectionExit();
-    this.handleEditExit();
+    this.store.dispatch(SandboxActions.escapeClicked());
   }
 
   constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
@@ -144,25 +144,5 @@ export class SandboxPageComponent implements OnInit {
 
   updateNodeValue(nodeId: string, aonData: AoNData): void {
     this.store.dispatch(SandboxActions.nodeValueChanged({ nodeId, aonData }));
-  }
-
-  private handleConnectionExit(): void {
-    this.sandboxFacade.isConnectionMode$
-      .pipe(
-        take(1),
-        filter(isConnectionMode => isConnectionMode)
-      )
-      .subscribe(() =>
-        this.store.dispatch(SandboxActions.revertConnectionOperation())
-      );
-  }
-
-  private handleEditExit(): void {
-    this.sandboxFacade.isEditMode$
-      .pipe(
-        take(1),
-        filter(isEditMode => isEditMode)
-      )
-      .subscribe(() => this.store.dispatch(SandboxActions.nodeEditExited()));
   }
 }
