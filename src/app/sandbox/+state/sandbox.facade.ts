@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Node, Edge } from '@swimlane/ngx-graph';
 import { Observable } from 'rxjs';
-import { ConnectionProcess } from './sandbox.model';
+import { ConnectionProcess, EscapeEvent } from './sandbox.model';
 import { SandboxSelectors } from './sandbox.selectors';
 
 @Injectable({
@@ -26,6 +26,10 @@ export class SandboxFacade {
   );
   isConnectionMode$: Observable<boolean> = this.store.select(
     SandboxSelectors.selectIsConnectionMode
+  );
+
+  escapeEvent$: Observable<EscapeEvent> = this.store.select(
+    SandboxSelectors.selectEscapeEvent
   );
 
   constructor(private store: Store<any>) {}

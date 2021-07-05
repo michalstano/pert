@@ -10,9 +10,15 @@ import { AonNodeComponent } from './aon-node/aon-node.component';
 import { SANDBOX_FEATURE_KEY, sandboxReducers } from './+state/sandbox.reducer';
 import { SandboxEffects } from './+state/sandbox.effects';
 import { DisableControlModule } from '../shared/directives/disable-control/disable-control.module';
+import { AonBlockInputComponent } from './aon-block-input/aon-block-input.component';
+import { DigitOnlyModule } from '@uiowa/digit-only';
 
 @NgModule({
-  declarations: [SandboxPageComponent, AonNodeComponent],
+  declarations: [
+    SandboxPageComponent,
+    AonNodeComponent,
+    AonBlockInputComponent
+  ],
   imports: [
     CommonModule,
     NgxGraphModule,
@@ -20,7 +26,8 @@ import { DisableControlModule } from '../shared/directives/disable-control/disab
     EffectsModule.forFeature([SandboxEffects]),
     ReactiveFormsModule,
     A11yModule,
-    DisableControlModule
+    DisableControlModule,
+    DigitOnlyModule
   ],
   exports: [SandboxPageComponent]
 })

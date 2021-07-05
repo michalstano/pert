@@ -1,9 +1,9 @@
 :host {
   display: grid;
   grid-template-areas:
-    "earliest-start duration earliest-finish"
-    "name name name"
-    "latest-start float latest-finish";
+    'earliest-start duration earliest-finish'
+    'name name name'
+    'latest-start float latest-finish';
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   width: 100%;
@@ -23,8 +23,9 @@
   }
 
   &.selected {
-    border-color: #006400;
-    background-color: var(--selected);
+    border-color: var(--selected-border);
+    border-width: 2px;
+    background-color: var(--selected-background);
   }
 
   &.unused {
@@ -37,13 +38,14 @@
   }
 
   &.selected-in-connection {
-    border-color: var(--selected);
+    border-color: var(--selected-background);
     border-width: 2px;
   }
 
   &.edit {
-    border-color: red;
+    border-color: var(--edited-border);
     border-width: 2px;
+    background-color: var(--light-background2);
   }
 }
 
@@ -79,21 +81,4 @@
 .latest-finish {
   grid-area: latest-finish;
   border-left: var(--primary-border);
-}
-
-input {
-  width: 100%;
-  background-color: transparent;
-  outline: none;
-  border: none;
-
-  &:read-only {
-    user-select: none;
-    pointer-events: none;
-    cursor: pointer;
-  }
-
-  &:disabled {
-    color: initial;
-  }
 }
