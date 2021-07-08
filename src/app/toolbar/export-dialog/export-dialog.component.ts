@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@ngneat/reactive-forms';
@@ -41,7 +41,8 @@ export interface DialogData {
       </button>
     </div>
   `,
-  styleUrls: ['./export-dialog.component.scss']
+  styleUrls: ['./export-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExportDialogComponent {
   readonly control = new FormControl<string>('', {
