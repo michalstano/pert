@@ -54,7 +54,9 @@ export class ImportDialogComponent implements OnInit {
   });
   private readonly fileReader: FileReader = new FileReader();
 
-  @HostListener('change', ['$event.target.files']) emitFiles(event: FileList) {
+  @HostListener('change', ['$event.target.files']) emitFiles(
+    event: FileList
+  ): void {
     const file = event?.item(0);
     this.formGroup.patchValue({ file });
     const isFileValid = this.formGroup.controls.file.valid;
@@ -69,10 +71,6 @@ export class ImportDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.formGroup.value$.subscribe(x => {
-      console.log(x);
-    });
-
     this.handleFileReaderChanges();
   }
 
