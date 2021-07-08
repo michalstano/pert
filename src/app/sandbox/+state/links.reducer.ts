@@ -55,6 +55,9 @@ const reducer = createReducer(
   ),
   on(SandboxActions.revertConnectionOperation, (state: LinksState) => {
     return { ...state, connection: null };
+  }),
+  on(ToolbarActions.importButtonClicked, (_, { result }) => {
+    return adapter.addMany(result.links, linksInitialState);
   })
 );
 

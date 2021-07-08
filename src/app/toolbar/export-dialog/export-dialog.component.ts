@@ -1,11 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl } from '@ngneat/reactive-forms';
-
-export interface DialogData {
-  name: string;
-}
 
 @Component({
   selector: 'app-export-dialog',
@@ -49,10 +45,7 @@ export class ExportDialogComponent {
     validators: [Validators.required]
   });
 
-  constructor(
-    readonly dialogRef: MatDialogRef<ExportDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) readonly data: DialogData
-  ) {}
+  constructor(readonly dialogRef: MatDialogRef<ExportDialogComponent>) {}
 
   dismiss(): void {
     this.dialogRef.close();

@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { SandboxFacade } from '../../sandbox/+state/sandbox.facade';
 import { ToolbarActions } from '../+state/toolbar.actions';
 import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
+import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
+import { PortData } from '../../sandbox/+state/sandbox.model';
 
 @UntilDestroy()
 @Component({
@@ -67,5 +69,18 @@ export class ToolbarComponent {
       });
   }
 
-  importButtonClicked(): void {}
+  importButtonClicked(): void {
+    const dialogRef = this.dialog.open(ImportDialogComponent, {
+      panelClass: 'dialog'
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((result: PortData) => {
+        console.log(result);
+        if (result) {
+          this.store.dispatch(ToolbarActions.importButtonClicked({ result }));
+        }
+      });
+  }
 }

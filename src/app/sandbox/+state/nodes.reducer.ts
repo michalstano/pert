@@ -93,7 +93,10 @@ const reducer = createReducer(
         state
       );
     }
-  )
+  ),
+  on(ToolbarActions.importButtonClicked, (_, { result }) => {
+    return adapter.addMany(result.nodes, nodesInitialState);
+  })
 );
 
 export function nodesReducer(

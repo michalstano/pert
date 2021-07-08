@@ -10,9 +10,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ToolbarEffects } from './+state/toolbar.effects';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
+import { ImportDialogComponent } from './import-dialog/import-dialog.component';
 
 @NgModule({
-  declarations: [ToolbarComponent, ExportDialogComponent],
+  declarations: [
+    ToolbarComponent,
+    ExportDialogComponent,
+    ImportDialogComponent
+  ],
   imports: [
     CommonModule,
     EffectsModule.forFeature([ToolbarEffects]),
