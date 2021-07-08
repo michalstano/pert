@@ -1,9 +1,9 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { ValidatorFn } from '@ngneat/reactive-forms';
 
 export function requiredFileType(): ValidatorFn {
   const correctType = 'json';
-  return function(control: AbstractControl) {
+  return (control: AbstractControl): ValidationErrors => {
     const file = control.value;
     if (file) {
       const extension = file.name.split('.')[1].toLowerCase();
@@ -21,7 +21,7 @@ export function requiredFileType(): ValidatorFn {
 }
 
 export function correctPortData(): ValidatorFn {
-  return function(control: AbstractControl) {
+  return (control: AbstractControl): ValidationErrors => {
     const result = control.value;
     if (result) {
       const areNodes = Array.isArray(result.nodes);
