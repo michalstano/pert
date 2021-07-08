@@ -14,6 +14,7 @@ import { FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { isEqual } from 'lodash';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { correctNodeValidator } from './aon-node.validators';
 import { AoNData } from '../+state/sandbox.model';
 import { AonBlockInputComponent } from '../aon-block-input/aon-block-input.component';
 
@@ -98,6 +99,10 @@ export class AonNodeComponent implements OnInit {
   public get isUnused(): boolean {
     return this.isConnectionMode && !this.isSelected;
   }
+  @HostBinding('class.invalid')
+  public get isInvalid(): boolean {
+    return this.form.invalid && !this.isBeingEdited;
+  }
 
   @Output() valueChanges = new EventEmitter<AoNData>();
 
@@ -131,15 +136,18 @@ export class AonNodeComponent implements OnInit {
     validators: [Validators.required]
   });
 
-  form = new FormGroup<AoNData>({
-    earliestStart: this.earliestStartCtrl,
-    duration: this.durationCtrl,
-    earliestFinish: this.earliestFinishCtrl,
-    name: this.nameCtrl,
-    latestStart: this.latestStartCtrl,
-    float: this.floatCtrl,
-    latestFinish: this.latestFinishCtrl
-  });
+  form = new FormGroup<AoNData>(
+    {
+      earliestStart: this.earliestStartCtrl,
+      duration: this.durationCtrl,
+      earliestFinish: this.earliestFinishCtrl,
+      name: this.nameCtrl,
+      latestStart: this.latestStartCtrl,
+      float: this.floatCtrl,
+      latestFinish: this.latestFinishCtrl
+    },
+    { validators: [correctNodeValidator()] }
+  );
 
   constructor(private elementRef: ElementRef) {}
 

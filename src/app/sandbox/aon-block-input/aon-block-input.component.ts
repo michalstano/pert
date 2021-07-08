@@ -17,7 +17,7 @@ import { FormControl } from '@ngneat/reactive-forms';
       maxlength="3"
       [formControl]="control"
       [readonly]="!isBeingEdited"
-      [disableControl]="!isBeingEdited && !isFirstItem"
+      [attr.disabled]="(!isBeingEdited && !isFirstItem) || null"
       [class.invalid]="control.invalid"
       (focusout)="removeSelection()"
     />
@@ -27,7 +27,7 @@ import { FormControl } from '@ngneat/reactive-forms';
       maxlength="10"
       [formControl]="control"
       [readonly]="!isBeingEdited"
-      [disableControl]="!isBeingEdited && !isFirstItem"
+      [attr.disabled]="(!isBeingEdited && !isFirstItem) || null"
       [class.invalid]="control.invalid"
       (focusout)="removeSelection()"
     />
