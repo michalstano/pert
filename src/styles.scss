@@ -1,6 +1,5 @@
-@import "assets/styles/_variables.scss";
+@import 'assets/styles/_variables.scss';
 @import 'assets/styles/_responsiveness.scss';
-@import 'assets/styles/_fonts.scss';
 @import 'assets/styles/_material.scss';
 
 :root {
@@ -13,6 +12,7 @@ html {
   padding: 0;
   margin: 0;
   height: -webkit-fill-available;
+  font-family: 'Rajdhani', sans-serif;
 }
 
 body {
@@ -20,4 +20,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+}
+
+.dialog {
+  width: 300px;
+
+  .mat-dialog-actions {
+    justify-content: flex-end;
+  }
 }
