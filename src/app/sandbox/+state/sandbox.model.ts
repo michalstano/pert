@@ -1,3 +1,5 @@
+import { Edge, Node } from '@swimlane/ngx-graph';
+
 export interface AoNData {
   earliestStart: number;
   duration: number;
@@ -11,6 +13,11 @@ export interface AoNData {
 export interface ConnectionProcess {
   firstId?: string;
   secondId?: string;
+}
+
+export interface PortData {
+  nodes: Node[];
+  links: Edge[];
 }
 
 export enum EscapeEvent {

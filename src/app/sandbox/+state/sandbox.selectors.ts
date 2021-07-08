@@ -1,10 +1,10 @@
 import { Dictionary } from '@ngrx/entity';
-import { Node } from '@swimlane/ngx-graph';
+import { Edge, Node } from '@swimlane/ngx-graph';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
-import { ConnectionProcess, EscapeEvent } from './sandbox.model';
+import { ConnectionProcess, EscapeEvent, PortData } from './sandbox.model';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
@@ -96,6 +96,21 @@ const selectEscapeEvent = createSelector(
   }
 );
 
+const selectNodesAndLinks = createSelector(
+  selectNodes,
+  selectLinks,
+  (nodes: Node[], links: Edge[]) =>
+    ({
+      nodes,
+      links
+    } as PortData)
+);
+
+const selectAreNodesAndLinks = createSelector(
+  selectNodesAndLinks,
+  ({ nodes, links }: PortData) => !!nodes.length || !!links.length
+);
+
 export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
@@ -106,5 +121,7 @@ export const SandboxSelectors = {
   selectIsConnectionMode,
   selectNodeById,
   selectIsConnectingById,
-  selectEscapeEvent
+  selectEscapeEvent,
+  selectNodesAndLinks,
+  selectAreNodesAndLinks
 };
