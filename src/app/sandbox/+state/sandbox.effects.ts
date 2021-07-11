@@ -82,7 +82,10 @@ export class SandboxEffects {
 
   removeNode = createEffect(() => () =>
     this.actions.pipe(
-      ofType(ToolbarActions.removeAoNButtonClicked),
+      ofType(
+        ToolbarActions.removeAoNButtonClicked,
+        SandboxActions.deleteClicked
+      ),
       withLatestFrom(
         this.sandboxFacade.selectedNodeId$,
         this.sandboxFacade.isConnectionMode$,
