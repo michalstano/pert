@@ -111,6 +111,17 @@ const selectAreNodesAndLinks = createSelector(
   ({ nodes, links }: PortData) => !!nodes.length || !!links.length
 );
 
+const selectIsGraphCorrect = createSelector(selectLinks, (links: Edge[]) =>
+  !!links.length ? false : undefined
+);
+
+const selectIsPossibleToRemoveNode = createSelector(
+  selectIsConnectionMode,
+  selectNodes,
+  (isConnectionMode: boolean, nodes: Node[]) =>
+    !isConnectionMode && !!nodes.length
+);
+
 export const SandboxSelectors = {
   selectNodes,
   selectSelectedNodeId,
@@ -123,5 +134,7 @@ export const SandboxSelectors = {
   selectIsConnectingById,
   selectEscapeEvent,
   selectNodesAndLinks,
-  selectAreNodesAndLinks
+  selectAreNodesAndLinks,
+  selectIsGraphCorrect,
+  selectIsPossibleToRemoveNode
 };

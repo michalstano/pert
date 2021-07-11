@@ -11,12 +11,14 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ToolbarEffects } from './+state/toolbar.effects';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
+import { GraphIndicatorComponent } from './graph-indicator/graph-indicator.component';
 
 @NgModule({
   declarations: [
     ToolbarComponent,
     ExportDialogComponent,
-    ImportDialogComponent
+    ImportDialogComponent,
+    GraphIndicatorComponent
   ],
   imports: [
     CommonModule,

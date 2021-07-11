@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin: 0.3rem 0;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+mat-icon {
+  height: 3rem;
+  width: 3rem;
+  font-size: 3rem;
+
+  &.correct-icon {
+    color: green;
+  }
+
+  &.incorrect-icon {
+    color: red;
+  }
+}

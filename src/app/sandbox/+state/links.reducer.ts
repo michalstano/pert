@@ -58,6 +58,9 @@ const reducer = createReducer(
   }),
   on(ToolbarActions.importButtonClicked, (_, { result }) => {
     return adapter.addMany(result.links, linksInitialState);
+  }),
+  on(SandboxActions.linksRemoved, (state: LinksState, { linkIds }) => {
+    return adapter.removeMany(linkIds, state);
   })
 );
 
