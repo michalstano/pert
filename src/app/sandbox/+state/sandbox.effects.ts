@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
+import { Edge } from '@swimlane/ngx-graph';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { ToolbarActions } from 'src/app/toolbar/+state/toolbar.actions';
 import { SandboxActions } from './sandbox.actions';
 import { SandboxFacade } from './sandbox.facade';
 import { EscapeEvent } from './sandbox.model';
@@ -75,6 +77,46 @@ export class SandboxEffects {
           return SandboxActions.nodeSelectionExited();
         }
       })
+    )
+  );
+
+  removeNode = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(ToolbarActions.removeAoNButtonClicked),
+      withLatestFrom(
+        this.sandboxFacade.selectedNodeId$,
+        this.sandboxFacade.isConnectionMode$,
+        (_, selectedNodeId: string, isConnectionMode: boolean) => ({
+          isConnectionMode,
+          selectedNodeId
+        })
+      ),
+      filter(
+        ({ isConnectionMode, selectedNodeId }) =>
+          !!selectedNodeId && !isConnectionMode
+      ),
+      map(({ selectedNodeId }) =>
+        SandboxActions.nodeRemoved({ nodeId: selectedNodeId })
+      )
+    )
+  );
+
+  removeLinks = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(SandboxActions.nodeRemoved),
+      withLatestFrom(
+        this.sandboxFacade.links$,
+        ({ nodeId }, links: Edge[]) => ({ nodeId, links })
+      ),
+      map(({ nodeId, links }) =>
+        links
+          .filter(
+            ({ source, target }) => source === nodeId || target === nodeId
+          )
+          .map(({ id }) => id)
+      ),
+      filter((linkIds: string[]) => !!linkIds.length),
+      map((linkIds: string[]) => SandboxActions.linksRemoved({ linkIds }))
     )
   );
 }

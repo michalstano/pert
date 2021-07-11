@@ -17,7 +17,11 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     <button mat-icon-button (click)="dispatchAddAoNButtonClicked()">
       <svg-icon key="add-aon-block"></svg-icon>
     </button>
-    <button mat-icon-button>
+    <button
+      mat-icon-button
+      [disabled]="(sandboxFacade.isPossibleToRemoveNode$ | async) === false"
+      (click)="dispatchRemoveAoNButtonClicked()"
+    >
       <svg-icon key="remove-aon-block"></svg-icon>
     </button>
     <button mat-icon-button (click)="dispatchConnectNodesButtonClicked()">
@@ -34,6 +38,9 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     >
       <mat-icon>file_upload</mat-icon>
     </button>
+    <app-graph-indicator
+      [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
+    ></app-graph-indicator>
   `,
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,6 +54,10 @@ export class ToolbarComponent {
 
   dispatchAddAoNButtonClicked(): void {
     this.store.dispatch(ToolbarActions.addAoNButtonClicked());
+  }
+
+  dispatchRemoveAoNButtonClicked(): void {
+    this.store.dispatch(ToolbarActions.removeAoNButtonClicked());
   }
 
   dispatchConnectNodesButtonClicked(): void {

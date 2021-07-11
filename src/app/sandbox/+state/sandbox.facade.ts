@@ -40,6 +40,14 @@ export class SandboxFacade {
     SandboxSelectors.selectAreNodesAndLinks
   );
 
+  isGraphCorrect$: Observable<boolean | undefined> = this.store.select(
+    SandboxSelectors.selectIsGraphCorrect
+  );
+
+  isPossibleToRemoveNode$: Observable<boolean> = this.store.select(
+    SandboxSelectors.selectIsPossibleToRemoveNode
+  );
+
   constructor(private store: Store<any>) {}
 
   getNodeById(nodeId: string): Observable<Node | null> {

@@ -36,6 +36,11 @@ const nodeValueChanged = createAction(
   props<{ nodeId: string; aonData: AoNData }>()
 );
 
+const nodeRemoved = createAction(
+  '[Sandbox] Node removed',
+  props<{ nodeId: string }>()
+);
+
 const turnOnConnectionMode = createAction('[Sandbox] Turn on connection mode');
 
 const turnOffConnectionMode = createAction(
@@ -56,6 +61,11 @@ const makeConnectionBetweenTwoNodes = createAction(
   props<{ connection: ConnectionProcess }>()
 );
 
+const linksRemoved = createAction(
+  '[Sandobx] Links removed',
+  props<{ linkIds: string[] }>()
+);
+
 const escapeClicked = createAction('[Sandobox] Escape clicked');
 
 export const SandboxActions = {
@@ -67,10 +77,12 @@ export const SandboxActions = {
   nodePositionChanged,
   nodeEditExited,
   nodeValueChanged,
+  nodeRemoved,
   revertConnectionOperation,
   selectFirstNodeToConnection,
   makeConnectionBetweenTwoNodes,
   turnOnConnectionMode,
   turnOffConnectionMode,
-  escapeClicked
+  escapeClicked,
+  linksRemoved
 };

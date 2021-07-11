@@ -55,6 +55,13 @@ const reducer = createReducer(
       selectedNodeId: newNode.id || null
     });
   }),
+  on(SandboxActions.nodeRemoved, (state: NodesState, { nodeId }) => {
+    return adapter.removeOne(nodeId, {
+      ...state,
+      selectedNodeId: null,
+      editedNodeId: null
+    });
+  }),
   on(ToolbarActions.connectNodesButtonClicked, (state: NodesState) => {
     return {
       ...state,

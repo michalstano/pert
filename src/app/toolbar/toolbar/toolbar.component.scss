@@ -28,10 +28,20 @@ button {
   height: 3.5rem;
   color: var(--text);
 
+  &:disabled {
+    svg-icon {
+      opacity: 0.5;
+    }
+  }
+
   svg-icon,
   msi-icon {
     width: 1.5rem;
     height: 1.5rem;
     color: var(--text);
   }
+}
+
+app-graph-indicator {
+  margin-top: auto;
 }
