@@ -68,6 +68,8 @@ const linksRemoved = createAction(
 
 const escapeClicked = createAction('[Sandobox] Escape clicked');
 
+const deleteClicked = createAction('[Sandbox] Delete clicked');
+
 export const SandboxActions = {
   nodeClicked,
   nodeDoubleClicked,
@@ -84,5 +86,6 @@ export const SandboxActions = {
   turnOnConnectionMode,
   turnOffConnectionMode,
   escapeClicked,
-  linksRemoved
+  linksRemoved,
+  deleteClicked
 };

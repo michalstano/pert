@@ -100,6 +100,11 @@ export class SandboxPageComponent implements OnInit {
     this.store.dispatch(SandboxActions.escapeClicked());
   }
 
+  @HostListener('document:keydown.delete', ['$event'])
+  onKeydownDeleteHandler(): void {
+    this.store.dispatch(SandboxActions.deleteClicked());
+  }
+
   constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
 
   ngOnInit(): void {
