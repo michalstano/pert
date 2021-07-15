@@ -39,8 +39,8 @@ import { AoNData } from '../+state/sandbox.model';
           class="node"
           width="122"
           height="80"
-          (click)="dispatchClick(node.id)"
-          (dblclick)="dispatchDoubleClick(node.id)"
+          (click)="dispatchClickOnNode(node.id)"
+          (dblclick)="dispatchDoubleClickOnNode(node.id)"
           (mouseup)="nodePositionChanged(node.id, node.position)"
         >
           <svg:foreignObject width="122" height="80">
@@ -62,26 +62,15 @@ import { AoNData } from '../+state/sandbox.model';
           </svg:foreignObject>
         </svg:g>
       </ng-template>
-      <!-- link template. remove if necessery -->
-      <!-- <ng-template #linkTemplate let-link>
-        <svg:g class="edge">
-          <svg:path
-            class="line"
-            stroke-width="2"
-            marker-end="url(#arrow)"
-          ></svg:path>
-          <svg:text class="edge-label" text-anchor="middle">
-            <textPath
-              class="text-path"
-              [attr.href]="'#' + link.id"
-              [style.dominant-baseline]="link.dominantBaseline"
-              startOffset="50%"
-            >
-              {{ link.label }}
-            </textPath>
-          </svg:text>
-        </svg:g>
-      </ng-template> -->
+      <ng-template #linkTemplate let-link>
+        <svg:path
+          class="edge"
+          stroke-width="2"
+          [attr.d]="link.line"
+          [class.selected]="(sandboxFacade.selectedLinkId$ | async) === link.id"
+          (click)="dispatchClickOnLink(link.id)"
+        />
+      </ng-template>
     </ngx-graph>
   `,
   styleUrls: ['./sandbox-page.component.scss'],
@@ -118,12 +107,16 @@ export class SandboxPageComponent implements OnInit {
     );
   }
 
-  dispatchClick(nodeId: string): void {
+  dispatchClickOnNode(nodeId: string): void {
     this.store.dispatch(SandboxActions.nodeClicked({ nodeId }));
   }
 
-  dispatchDoubleClick(nodeId: string): void {
+  dispatchDoubleClickOnNode(nodeId: string): void {
     this.store.dispatch(SandboxActions.nodeDoubleClicked({ nodeId }));
+  }
+
+  dispatchClickOnLink(linkId: string): void {
+    this.store.dispatch(SandboxActions.linkClicked({ linkId }));
   }
 
   nodePositionChanged(nodeId: string, position: NodePosition): void {

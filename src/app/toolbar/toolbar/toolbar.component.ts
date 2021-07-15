@@ -19,10 +19,10 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     </button>
     <button
       mat-icon-button
-      [disabled]="(sandboxFacade.isPossibleToRemoveNode$ | async) === false"
-      (click)="dispatchRemoveAoNButtonClicked()"
+      [disabled]="(sandboxFacade.isPossibleToRemoveItem$ | async) === false"
+      (click)="dispatchRemoveItemButtonClicked()"
     >
-      <svg-icon key="remove-aon-block"></svg-icon>
+      <mat-icon>delete</mat-icon>
     </button>
     <button mat-icon-button (click)="dispatchConnectNodesButtonClicked()">
       <mat-icon>compare_arrows</mat-icon>
@@ -56,8 +56,8 @@ export class ToolbarComponent {
     this.store.dispatch(ToolbarActions.addAoNButtonClicked());
   }
 
-  dispatchRemoveAoNButtonClicked(): void {
-    this.store.dispatch(ToolbarActions.removeAoNButtonClicked());
+  dispatchRemoveItemButtonClicked(): void {
+    this.store.dispatch(ToolbarActions.removeItemButtonClicked());
   }
 
   dispatchConnectNodesButtonClicked(): void {

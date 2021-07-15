@@ -27,25 +27,24 @@ export class SandboxFacade {
   isConnectionMode$: Observable<boolean> = this.store.select(
     SandboxSelectors.selectIsConnectionMode
   );
+  selectedLinkId$: Observable<string | null> = this.store.select(
+    SandboxSelectors.selectSelectedLinkId
+  );
 
   escapeEvent$: Observable<EscapeEvent> = this.store.select(
     SandboxSelectors.selectEscapeEvent
   );
-
   portData$: Observable<PortData> = this.store.select(
     SandboxSelectors.selectNodesAndLinks
   );
-
   isPortData$: Observable<boolean> = this.store.select(
     SandboxSelectors.selectAreNodesAndLinks
   );
-
   isGraphCorrect$: Observable<boolean | undefined> = this.store.select(
     SandboxSelectors.selectIsGraphCorrect
   );
-
-  isPossibleToRemoveNode$: Observable<boolean> = this.store.select(
-    SandboxSelectors.selectIsPossibleToRemoveNode
+  isPossibleToRemoveItem$: Observable<boolean> = this.store.select(
+    SandboxSelectors.selectIsPossibleToRemoveItem
   );
 
   constructor(private store: Store<any>) {}
