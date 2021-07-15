@@ -115,7 +115,7 @@ export class SandboxPageComponent implements OnInit {
     this.store.dispatch(SandboxActions.nodeDoubleClicked({ nodeId }));
   }
 
-  dispatchClickOnLink(linkId: string) {
+  dispatchClickOnLink(linkId: string): void {
     this.store.dispatch(SandboxActions.linkClicked({ linkId }));
   }
 
