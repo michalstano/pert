@@ -83,7 +83,7 @@ export class SandboxEffects {
   removeNode = createEffect(() => () =>
     this.actions.pipe(
       ofType(
-        ToolbarActions.removeAoNButtonClicked,
+        ToolbarActions.removeItemButtonClicked,
         SandboxActions.deleteClicked
       ),
       withLatestFrom(
@@ -100,6 +100,30 @@ export class SandboxEffects {
       ),
       map(({ selectedNodeId }) =>
         SandboxActions.nodeRemoved({ nodeId: selectedNodeId })
+      )
+    )
+  );
+
+  removeLink = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(
+        ToolbarActions.removeItemButtonClicked,
+        SandboxActions.deleteClicked
+      ),
+      withLatestFrom(
+        this.sandboxFacade.selectedLinkId$,
+        this.sandboxFacade.isConnectionMode$,
+        (_, selectedLinkId: string, isConnectionMode: boolean) => ({
+          isConnectionMode,
+          selectedLinkId
+        })
+      ),
+      filter(
+        ({ isConnectionMode, selectedLinkId }) =>
+          !!selectedLinkId && !isConnectionMode
+      ),
+      map(({ selectedLinkId }) =>
+        SandboxActions.linkRemoved({ linkId: selectedLinkId })
       )
     )
   );

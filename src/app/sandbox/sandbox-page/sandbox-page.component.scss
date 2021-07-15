@@ -9,3 +9,11 @@ ngx-graph {
   height: 100%;
   width: 100%;
 }
+
+.edge {
+  cursor: pointer;
+
+  &.selected {
+    stroke: var(--selected-background) !important;
+  }
+}

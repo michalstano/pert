@@ -61,6 +61,16 @@ const makeConnectionBetweenTwoNodes = createAction(
   props<{ connection: ConnectionProcess }>()
 );
 
+const linkClicked = createAction(
+  '[Sandbox] Link clicked',
+  props<{ linkId: string }>()
+);
+
+const linkRemoved = createAction(
+  '[Sandobx] Link removed',
+  props<{ linkId: string }>()
+);
+
 const linksRemoved = createAction(
   '[Sandobx] Links removed',
   props<{ linkIds: string[] }>()
@@ -86,6 +96,8 @@ export const SandboxActions = {
   turnOnConnectionMode,
   turnOffConnectionMode,
   escapeClicked,
+  linkClicked,
+  linkRemoved,
   linksRemoved,
   deleteClicked
 };

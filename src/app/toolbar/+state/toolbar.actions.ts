@@ -3,8 +3,8 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
 
 const addAoNButtonClicked = createAction('[Toolbar] Add AoN Button Clicked');
 
-const removeAoNButtonClicked = createAction(
-  '[Toolbar] Remove AoN Button Clicked'
+const removeItemButtonClicked = createAction(
+  '[Toolbar] Remove Item Button Clicked'
 );
 
 const connectNodesButtonClicked = createAction(
@@ -23,7 +23,7 @@ const exportButtonClicked = createAction(
 
 export const ToolbarActions = {
   addAoNButtonClicked,
-  removeAoNButtonClicked,
+  removeItemButtonClicked,
   connectNodesButtonClicked,
   importButtonClicked,
   exportButtonClicked

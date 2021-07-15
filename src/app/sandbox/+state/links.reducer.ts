@@ -13,15 +13,18 @@ export const adapter: EntityAdapter<Edge> = createEntityAdapter<Edge>({
 
 export interface LinksState extends EntityState<Edge> {
   connection: ConnectionProcess | null;
+  selectedLinkId: string | null;
 }
 
 export const linksSelectors = {
   ...adapter.getSelectors(),
-  connection: (state: LinksState) => state.connection
+  connection: (state: LinksState) => state.connection,
+  selectedLinkId: (state: LinksState) => state.selectedLinkId
 };
 
 export const linksInitialState: LinksState = adapter.getInitialState({
-  connection: null
+  connection: null,
+  selectedLinkId: null
 });
 
 const reducer = createReducer(
@@ -58,6 +61,20 @@ const reducer = createReducer(
   }),
   on(ToolbarActions.importButtonClicked, (_, { result }) => {
     return adapter.addMany(result.links, linksInitialState);
+  }),
+  on(SandboxActions.nodeClicked, (state: LinksState) => ({
+    ...state,
+    selectedLinkId: null
+  })),
+  on(SandboxActions.linkClicked, (state: LinksState, { linkId }) => ({
+    ...state,
+    selectedLinkId: linkId
+  })),
+  on(SandboxActions.linkRemoved, (state: LinksState, { linkId }) => {
+    return adapter.removeOne(linkId, {
+      ...state,
+      selectedLinkId: null
+    });
   }),
   on(SandboxActions.linksRemoved, (state: LinksState, { linkIds }) => {
     return adapter.removeMany(linkIds, state);

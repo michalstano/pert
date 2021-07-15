@@ -72,6 +72,11 @@ const selectIsConnectingById = ({ id }: { id: string }) =>
     (connection: ConnectionProcess | null) => connection?.firstId === id
   );
 
+const selectSelectedLinkId = createSelector(
+  selectLinksState,
+  linksSelectors.selectedLinkId
+);
+
 /* others */
 
 const selectEscapeEvent = createSelector(
@@ -115,7 +120,7 @@ const selectIsGraphCorrect = createSelector(selectLinks, (links: Edge[]) =>
   !!links.length ? false : undefined
 );
 
-const selectIsPossibleToRemoveNode = createSelector(
+const selectIsPossibleToRemoveItem = createSelector(
   selectIsConnectionMode,
   selectNodes,
   (isConnectionMode: boolean, nodes: Node[]) =>
@@ -130,11 +135,12 @@ export const SandboxSelectors = {
   selectLinks,
   selectConnection,
   selectIsConnectionMode,
+  selectSelectedLinkId,
   selectNodeById,
   selectIsConnectingById,
   selectEscapeEvent,
   selectNodesAndLinks,
   selectAreNodesAndLinks,
   selectIsGraphCorrect,
-  selectIsPossibleToRemoveNode
+  selectIsPossibleToRemoveItem
 };
