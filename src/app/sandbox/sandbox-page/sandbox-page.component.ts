@@ -34,6 +34,19 @@ import { AoNData } from '../+state/sandbox.model';
       [nodes]="(nodes$ | async)!"
       [links]="(links$ | async)!"
     >
+      <ng-template #defsTemplate>
+        <svg:marker
+          id="arrow"
+          viewBox="0 -5 10 10"
+          refX="8"
+          refY="0"
+          markerWidth="4"
+          markerHeight="4"
+          orient="auto"
+        >
+          <svg:path d="M0,-5L10,0L0,5" />
+        </svg:marker>
+      </ng-template>
       <ng-template #nodeTemplate let-node>
         <svg:g
           class="node"
@@ -69,6 +82,7 @@ import { AoNData } from '../+state/sandbox.model';
           [attr.d]="link.line"
           [class.selected]="(sandboxFacade.selectedLinkId$ | async) === link.id"
           (click)="dispatchClickOnLink(link.id)"
+          marker-end="url(#arrow)"
         />
       </ng-template>
     </ngx-graph>
