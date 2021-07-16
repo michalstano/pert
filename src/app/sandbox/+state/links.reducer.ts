@@ -62,10 +62,14 @@ const reducer = createReducer(
   on(ToolbarActions.importButtonClicked, (_, { result }) => {
     return adapter.addMany(result.links, linksInitialState);
   }),
-  on(SandboxActions.nodeClicked, (state: LinksState) => ({
-    ...state,
-    selectedLinkId: null
-  })),
+  on(
+    SandboxActions.nodeClicked,
+    SandboxActions.linkSelectionExited,
+    (state: LinksState) => ({
+      ...state,
+      selectedLinkId: null
+    })
+  ),
   on(SandboxActions.linkClicked, (state: LinksState, { linkId }) => ({
     ...state,
     selectedLinkId: linkId

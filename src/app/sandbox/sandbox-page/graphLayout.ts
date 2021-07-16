@@ -1,4 +1,4 @@
-import { Graph, Layout, Edge } from '@swimlane/ngx-graph';
+import { Graph, Layout, Edge, Node, NodePosition } from '@swimlane/ngx-graph';
 import * as dagre from 'dagre';
 
 export enum Orientation {
@@ -31,6 +31,11 @@ export interface DagreSettings {
 
 export interface DagreNodesOnlySettings extends DagreSettings {
   curveDistance?: number;
+}
+
+interface EdgePoints {
+  startingPoint: NodePosition;
+  endingPoint: NodePosition;
 }
 
 const DEFAULT_EDGE_NAME = '\x00';
@@ -83,19 +88,10 @@ export class GraphLayout implements Layout {
   public updateEdge(graph: Graph, edge: Edge): Graph {
     const sourceNode = graph.nodes.find(n => n.id === edge.source);
     const targetNode = graph.nodes.find(n => n.id === edge.target);
-    const rankAxis: 'x' | 'y' =
-      this.settings.orientation === 'BT' || this.settings.orientation === 'TB'
-        ? 'y'
-        : 'x';
-    const orderAxis: 'x' | 'y' = rankAxis === 'y' ? 'x' : 'y';
-    const startingPoint = {
-      [orderAxis]: sourceNode.position[orderAxis],
-      [rankAxis]: sourceNode.position[rankAxis]
-    };
-    const endingPoint = {
-      [orderAxis]: targetNode.position[orderAxis],
-      [rankAxis]: targetNode.position[rankAxis]
-    };
+    const { startingPoint, endingPoint } = this.getEdgePoints(
+      sourceNode,
+      targetNode
+    );
     // generate new points
     edge.points = [startingPoint, endingPoint];
     const edgeLabelId = `${edge.source}${EDGE_KEY_DELIM}${edge.target}${EDGE_KEY_DELIM}${DEFAULT_EDGE_NAME}`;
@@ -175,5 +171,115 @@ export class GraphLayout implements Layout {
     }
 
     return this.dagreGraph;
+  }
+
+  private getEdgePoints(sourceNode: Node, targetNode: Node): EdgePoints {
+    const angle =
+      (Math.atan2(
+        targetNode.position.y - sourceNode.position.y,
+        targetNode.position.x - sourceNode.position.x
+      ) *
+        180) /
+      Math.PI;
+
+    const halfWidth = sourceNode.dimension.width / 2;
+    const halfHeight = sourceNode.dimension.height / 2;
+
+    if (angle <= 22.5 && angle >= -22.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x + halfWidth,
+          y: sourceNode.position.y
+        },
+        endingPoint: {
+          x: targetNode.position.x - halfWidth,
+          y: targetNode.position.y
+        }
+      };
+    }
+    if (angle <= 67.5 && angle >= 22.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x + halfWidth,
+          y: sourceNode.position.y + halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x - halfWidth,
+          y: targetNode.position.y - halfHeight
+        }
+      };
+    }
+    if (angle <= 112.5 && angle >= 67.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x,
+          y: sourceNode.position.y + halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x,
+          y: targetNode.position.y - halfHeight
+        }
+      };
+    }
+    if (angle <= 157.5 && angle >= 112.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x - halfWidth,
+          y: sourceNode.position.y + halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x + halfWidth,
+          y: targetNode.position.y - halfHeight
+        }
+      };
+    }
+    if (angle <= -157.5 || angle >= 157.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x - halfWidth,
+          y: sourceNode.position.y
+        },
+        endingPoint: {
+          x: targetNode.position.x + halfWidth,
+          y: targetNode.position.y
+        }
+      };
+    }
+    if (angle <= -112.5 && angle >= -157.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x - halfWidth,
+          y: sourceNode.position.y - halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x + halfWidth,
+          y: targetNode.position.y + halfHeight
+        }
+      };
+    }
+    if (angle <= -67.5 && angle >= -122.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x,
+          y: sourceNode.position.y - halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x,
+          y: targetNode.position.y + halfHeight
+        }
+      };
+    }
+    if (angle <= -22.5 && angle >= -67.5) {
+      return {
+        startingPoint: {
+          x: sourceNode.position.x + halfWidth,
+          y: sourceNode.position.y - halfHeight
+        },
+        endingPoint: {
+          x: targetNode.position.x - halfWidth,
+          y: targetNode.position.y + halfHeight
+        }
+      };
+    }
   }
 }

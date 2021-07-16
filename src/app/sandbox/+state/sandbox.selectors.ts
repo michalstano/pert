@@ -83,10 +83,12 @@ const selectEscapeEvent = createSelector(
   selectIsConnectionMode,
   selectIsEditMode,
   selectSelectedNodeId,
+  selectSelectedLinkId,
   (
     isConnectionMode: boolean,
     isEditMode: boolean,
-    selectedNodeId: string | null
+    selectedNodeId: string | null,
+    selectedLinkId: string | null
   ) => {
     if (isConnectionMode) {
       return EscapeEvent.connectionMode;
@@ -95,7 +97,10 @@ const selectEscapeEvent = createSelector(
       return EscapeEvent.editMode;
     }
     if (!!selectedNodeId) {
-      return EscapeEvent.selectionMode;
+      return EscapeEvent.nodeSelectionMode;
+    }
+    if (!!selectedLinkId) {
+      return EscapeEvent.linkSelectionMode;
     }
     return EscapeEvent.empty;
   }
@@ -116,8 +121,10 @@ const selectAreNodesAndLinks = createSelector(
   ({ nodes, links }: PortData) => !!nodes.length || !!links.length
 );
 
-const selectIsGraphCorrect = createSelector(selectLinks, (links: Edge[]) =>
-  !!links.length ? false : undefined
+const selectIsGraphCorrect = createSelector(
+  selectNodes,
+  selectLinks,
+  (nodes: Node[], links: Edge[]) => (!!links.length ? false : undefined)
 );
 
 const selectIsPossibleToRemoveItem = createSelector(
