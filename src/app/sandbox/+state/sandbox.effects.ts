@@ -73,8 +73,11 @@ export class SandboxEffects {
         if (event === EscapeEvent.editMode) {
           return SandboxActions.nodeEditExited();
         }
-        if (event === EscapeEvent.selectionMode) {
+        if (event === EscapeEvent.nodeSelectionMode) {
           return SandboxActions.nodeSelectionExited();
+        }
+        if (event === EscapeEvent.linkSelectionMode) {
+          return SandboxActions.linkSelectionExited();
         }
       })
     )

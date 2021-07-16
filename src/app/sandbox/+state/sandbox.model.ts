@@ -23,6 +23,7 @@ export interface PortData {
 export enum EscapeEvent {
   connectionMode = 'CONNECTION_MODE',
   editMode = 'EDIT_MODE',
-  selectionMode = 'SELECTION_MODE',
+  nodeSelectionMode = 'NODE_SELECTION_MODE',
+  linkSelectionMode = 'LINK_SELECTION_MODE',
   empty = 'EMPTY'
 }

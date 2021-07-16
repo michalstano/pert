@@ -76,6 +76,8 @@ const linksRemoved = createAction(
   props<{ linkIds: string[] }>()
 );
 
+const linkSelectionExited = createAction('[Sandbox] Link selection exited');
+
 const escapeClicked = createAction('[Sandobox] Escape clicked');
 
 const deleteClicked = createAction('[Sandbox] Delete clicked');
@@ -99,5 +101,6 @@ export const SandboxActions = {
   linkClicked,
   linkRemoved,
   linksRemoved,
+  linkSelectionExited,
   deleteClicked
 };
