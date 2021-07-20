@@ -13,11 +13,17 @@ export function correctNodeValidator(): ValidatorFn {
       latestFinish
     }: AoNData = form.value;
 
-    const firstRule = +earliestFinish - +earliestStart === +duration;
-    const secondRule = +latestFinish - +duration === +latestStart;
-    const thirdRule = +latestStart - +float === +earliestStart;
+    const rules = [
+      +earliestFinish - +earliestStart === +duration,
+      +latestFinish - +duration === +latestStart,
+      +latestStart - +float === +earliestStart,
+      earliestStart < earliestFinish,
+      latestStart < latestFinish,
+      latestStart >= earliestStart,
+      latestFinish >= earliestFinish
+    ];
 
-    if (firstRule && secondRule && thirdRule) {
+    if (rules.every(r => !!r)) {
       return null;
     }
     return { incorrectValues: true };

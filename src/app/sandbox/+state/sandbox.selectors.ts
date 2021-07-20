@@ -5,6 +5,7 @@ import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
 import { ConnectionProcess, EscapeEvent, PortData } from './sandbox.model';
+import { getIsGraphCorrect } from './graph-correctness';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
@@ -121,17 +122,21 @@ const selectAreNodesAndLinks = createSelector(
   ({ nodes, links }: PortData) => !!nodes.length || !!links.length
 );
 
-const selectIsGraphCorrect = createSelector(
-  selectNodes,
-  selectLinks,
-  (nodes: Node[], links: Edge[]) => (!!links.length ? false : undefined)
-);
-
 const selectIsPossibleToRemoveItem = createSelector(
   selectIsConnectionMode,
   selectNodes,
   (isConnectionMode: boolean, nodes: Node[]) =>
     !isConnectionMode && !!nodes.length
+);
+
+/* graph correctness */
+
+const selectIsGraphCorrect = createSelector(
+  selectAreNodesAndLinks,
+  selectNodes,
+  selectNodeEntities,
+  selectLinks,
+  getIsGraphCorrect
 );
 
 export const SandboxSelectors = {

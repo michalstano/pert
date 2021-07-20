@@ -89,7 +89,7 @@ const reducer = createReducer(
   }),
   on(
     SandboxActions.nodeValueChanged,
-    (state: NodesState, { nodeId, aonData }) => {
+    (state: NodesState, { nodeId, aonData, isValid }) => {
       const entity = state.entities[nodeId];
       return adapter.updateOne(
         {
@@ -97,7 +97,8 @@ const reducer = createReducer(
           changes: {
             data: {
               ...entity.data,
-              aonData
+              aonData,
+              isValid
             }
           }
         },

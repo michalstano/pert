@@ -18,6 +18,11 @@ import { correctNodeValidator } from './aon-node.validators';
 import { AoNData } from '../+state/sandbox.model';
 import { AonBlockInputComponent } from '../aon-block-input/aon-block-input.component';
 
+export interface NodeData {
+  aonData: AoNData;
+  isValid: boolean;
+}
+
 @UntilDestroy()
 @Component({
   selector: '[aon-node]',
@@ -103,8 +108,12 @@ export class AonNodeComponent implements OnInit {
   public get isInvalid(): boolean {
     return this.form.invalid && !this.isBeingEdited;
   }
+  @HostBinding('class.critical')
+  public get isCritical(): boolean {
+    return this.form.valid && this.aonData.float === 0;
+  }
 
-  @Output() valueChanges = new EventEmitter<AoNData>();
+  @Output() valueChanges = new EventEmitter<NodeData>();
 
   /* Variables */
   private config = {
@@ -171,7 +180,9 @@ export class AonNodeComponent implements OnInit {
         debounceTime(this.config.formDebounceTime),
         untilDestroyed(this)
       )
-      .subscribe(this.valueChanges);
+      .subscribe((aonData: AoNData) =>
+        this.valueChanges.emit({ aonData, isValid: this.form.valid })
+      );
   }
 
   private focusFirstField(): void {
