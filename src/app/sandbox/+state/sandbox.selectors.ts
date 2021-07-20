@@ -124,9 +124,15 @@ const selectAreNodesAndLinks = createSelector(
 
 const selectIsPossibleToRemoveItem = createSelector(
   selectIsConnectionMode,
+  selectSelectedNodeId,
+  (isConnectionMode: boolean, selectedNodeId: string | null) =>
+    !isConnectionMode && !!selectedNodeId
+);
+
+const selectIsPossibleEnableConnectionMode = createSelector(
+  selectIsEditMode,
   selectNodes,
-  (isConnectionMode: boolean, nodes: Node[]) =>
-    !isConnectionMode && !!nodes.length
+  (isEditMode: boolean, nodes: Node[]) => !isEditMode && nodes.length > 1
 );
 
 /* graph correctness */
@@ -154,5 +160,6 @@ export const SandboxSelectors = {
   selectNodesAndLinks,
   selectAreNodesAndLinks,
   selectIsGraphCorrect,
-  selectIsPossibleToRemoveItem
+  selectIsPossibleToRemoveItem,
+  selectIsPossibleEnableConnectionMode
 };

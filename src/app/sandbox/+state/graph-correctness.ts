@@ -10,8 +10,13 @@ const getConnectedNodes = (
   const connectedNodeIdsSet = new Set<Node>();
 
   links.forEach(({ source, target }) => {
-    connectedNodeIdsSet.add(nodesEntities[source]);
-    connectedNodeIdsSet.add(nodesEntities[target]);
+    const sourceNode = nodesEntities[source];
+    const targetNode = nodesEntities[target];
+
+    if (sourceNode && targetNode) {
+      connectedNodeIdsSet.add(sourceNode);
+      connectedNodeIdsSet.add(targetNode);
+    }
   });
 
   const connectedNodeIds: Node[] = Array.from(connectedNodeIdsSet);
