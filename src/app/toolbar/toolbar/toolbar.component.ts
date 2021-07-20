@@ -24,7 +24,11 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     >
       <mat-icon>delete</mat-icon>
     </button>
-    <button mat-icon-button (click)="dispatchConnectNodesButtonClicked()">
+    <button
+      mat-icon-button
+      [disabled]="!(sandboxFacade.isPossibleToEnableConnectionMode$ | async)"
+      (click)="dispatchConnectNodesButtonClicked()"
+    >
       <mat-icon>compare_arrows</mat-icon>
     </button>
     <div class="line"></div>
@@ -38,9 +42,21 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     >
       <mat-icon>file_upload</mat-icon>
     </button>
-    <app-graph-indicator
-      [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
-    ></app-graph-indicator>
+    <div
+      *ngIf="(sandboxFacade.isGraphCorrect$ | async) !== undefined"
+      class="down"
+    >
+      <button
+        *ngIf="sandboxFacade.isGraphCorrect$ | async"
+        mat-icon-button
+        (click)="exportButtonClicked()"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      <app-graph-indicator
+        [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
+      ></app-graph-indicator>
+    </div>
   `,
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -88,7 +104,6 @@ export class ToolbarComponent {
       .afterClosed()
       .pipe(untilDestroyed(this))
       .subscribe((result: PortData) => {
-        console.log(result);
         if (result) {
           this.store.dispatch(ToolbarActions.importButtonClicked({ result }));
         }

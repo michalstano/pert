@@ -46,6 +46,9 @@ export class SandboxFacade {
   isPossibleToRemoveItem$: Observable<boolean> = this.store.select(
     SandboxSelectors.selectIsPossibleToRemoveItem
   );
+  isPossibleToEnableConnectionMode$: Observable<boolean> = this.store.select(
+    SandboxSelectors.selectIsPossibleEnableConnectionMode
+  );
 
   constructor(private store: Store<any>) {}
 
