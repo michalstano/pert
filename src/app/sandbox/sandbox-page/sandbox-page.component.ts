@@ -154,7 +154,12 @@ export class SandboxPageComponent implements OnInit {
       });
   }
 
-  updateNodeValue(nodeId: string, aonData: AoNData): void {
-    this.store.dispatch(SandboxActions.nodeValueChanged({ nodeId, aonData }));
+  updateNodeValue(
+    nodeId: string,
+    { aonData, isValid }: { aonData: AoNData; isValid: boolean }
+  ): void {
+    this.store.dispatch(
+      SandboxActions.nodeValueChanged({ nodeId, aonData, isValid })
+    );
   }
 }

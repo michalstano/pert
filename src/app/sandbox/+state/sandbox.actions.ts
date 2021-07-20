@@ -33,7 +33,7 @@ const nodeEditExited = createAction('[Sandbox] Node Edit exited');
 
 const nodeValueChanged = createAction(
   '[Sandbox] Node value changed',
-  props<{ nodeId: string; aonData: AoNData }>()
+  props<{ nodeId: string; aonData: AoNData; isValid: boolean }>()
 );
 
 const nodeRemoved = createAction(
