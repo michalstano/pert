@@ -2,12 +2,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { HotToastService } from '@ngneat/hot-toast';
 import { SandboxFacade } from '../../sandbox/+state/sandbox.facade';
 import { ToolbarActions } from '../+state/toolbar.actions';
 import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
 import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
 import { PortData } from '../../sandbox/+state/sandbox.model';
 import { ChartDialogComponent } from '../chart-dialog/chart-dialog.component';
+import { InfoWindowComponent } from '../info-window/info-window.component';
 
 @UntilDestroy()
 @Component({
@@ -67,24 +69,24 @@ import { ChartDialogComponent } from '../chart-dialog/chart-dialog.component';
       (click)="infoButtonClicked()"
     >
       <mat-icon>info</mat-icon>
-      <div
-        *ngIf="(sandboxFacade.isGraphCorrect$ | async) !== undefined"
-        class="down"
-      >
-        <button
-          *ngIf="sandboxFacade.isGraphCorrect$ | async"
-          mat-icon-button
-          matTooltip="Podejrzyj wykres Gantta"
-          matTooltipPosition="after"
-          (click)="generateChartButtonClicked()"
-        >
-          <mat-icon>bar_chart</mat-icon>
-        </button>
-        <app-graph-indicator
-          [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
-        ></app-graph-indicator>
-      </div>
     </button>
+    <div
+      *ngIf="(sandboxFacade.isGraphCorrect$ | async) !== undefined"
+      class="down"
+    >
+      <button
+        *ngIf="sandboxFacade.isGraphCorrect$ | async"
+        mat-icon-button
+        matTooltip="Podejrzyj wykres Gantta"
+        matTooltipPosition="after"
+        (click)="generateChartButtonClicked()"
+      >
+        <mat-icon>bar_chart</mat-icon>
+      </button>
+      <app-graph-indicator
+        [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
+      ></app-graph-indicator>
+    </div>
   `,
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -93,7 +95,8 @@ export class ToolbarComponent {
   constructor(
     private readonly store: Store<any>,
     private readonly dialog: MatDialog,
-    readonly sandboxFacade: SandboxFacade
+    readonly sandboxFacade: SandboxFacade,
+    private readonly toast: HotToastService
   ) {}
 
   dispatchAddAoNButtonClicked(): void {
@@ -138,7 +141,20 @@ export class ToolbarComponent {
       });
   }
 
-  infoButtonClicked(): void {}
+  infoButtonClicked(): void {
+    this.toast.show(InfoWindowComponent, {
+      id: 'info-window',
+      dismissible: true,
+      autoClose: false,
+      position: 'bottom-right',
+      style: {
+        border: '1px solid var(--light-border-color)',
+        padding: '16px',
+        ['background-color']: 'var(--light-background2)',
+        color: 'var(--text)'
+      }
+    });
+  }
 
   generateChartButtonClicked(): void {
     this.dialog.open(ChartDialogComponent, {

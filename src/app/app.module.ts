@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { SvgIconsModule } from '@ngneat/svg-icon';
+import { HotToastModule } from '@ngneat/hot-toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SandboxModule } from './sandbox/sandbox.module';
@@ -31,7 +32,8 @@ import { environment } from '../environments/environment';
     EffectsModule.forRoot(),
     SvgIconsModule.forRoot({
       icons: [appAghLogo, appAddAonBlock, appRemoveAonBlock]
-    })
+    }),
+    HotToastModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
