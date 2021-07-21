@@ -110,7 +110,7 @@ export class AonNodeComponent implements OnInit {
   }
   @HostBinding('class.critical')
   public get isCritical(): boolean {
-    return this.form.valid && this.aonData.float === 0;
+    return this.form.valid && this.aonData.float === 0 && !this.isSelected;
   }
 
   @Output() valueChanges = new EventEmitter<NodeData>();

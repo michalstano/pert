@@ -14,6 +14,7 @@ import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
 import { GraphIndicatorComponent } from './graph-indicator/graph-indicator.component';
 import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
+import { InfoWindowComponent } from './info-window/info-window.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
     ExportDialogComponent,
     ImportDialogComponent,
     GraphIndicatorComponent,
-    ChartDialogComponent
+    ChartDialogComponent,
+    InfoWindowComponent
   ],
   imports: [
     CommonModule,
