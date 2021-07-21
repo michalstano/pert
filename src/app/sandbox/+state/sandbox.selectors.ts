@@ -139,6 +139,41 @@ const selectIsPossibleEnableConnectionMode = createSelector(
   (isEditMode: boolean, nodes: Node[]) => !isEditMode && nodes.length > 1
 );
 
+const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
+  createSelector(
+    selectNodeById({ id }),
+    selectNodeEntities,
+    selectSelectedNodeId,
+    selectLinks,
+    (
+      node: Node,
+      nodeEntities: Dictionary<Node>,
+      selectedNodeId: string | null,
+      links: Edge[]
+    ) => {
+      const isInCriticalPath = ({ data }: Node): boolean =>
+        data.isValid && +data.aonData.float === 0;
+
+      const isNodeSelected: boolean = selectedNodeId === node.id;
+      const previousNodes: Node[] = links
+        .filter(({ target }) => target === node.id)
+        .map(({ source }) => nodeEntities[source]);
+
+      const isNodeConnected: boolean = links.some(
+        ({ source, target }) => node.id === target || node.id === source
+      );
+      const isPreviousNodeInCriticalPath: boolean = !!previousNodes.length
+        ? previousNodes.some(previousNode => isInCriticalPath(previousNode))
+        : isNodeConnected;
+
+      return (
+        !isNodeSelected &&
+        isInCriticalPath(node) &&
+        isPreviousNodeInCriticalPath
+      );
+    }
+  );
+
 /* graph correctness */
 
 const selectIsGraphCorrect = createSelector(
@@ -163,6 +198,7 @@ export const SandboxSelectors = {
   selectEscapeEvent,
   selectNodesAndLinks,
   selectAreNodesAndLinks,
+  selectIsNodeInCriticalPath,
   selectIsGraphCorrect,
   selectIsPossibleToRemoveItem,
   selectIsPossibleEnableConnectionMode

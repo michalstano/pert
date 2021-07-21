@@ -13,7 +13,7 @@ import { Validators } from '@angular/forms';
 import { FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { isEqual } from 'lodash';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 import { correctNodeValidator } from './aon-node.validators';
 import { AoNData } from '../+state/sandbox.model';
 import { AonBlockInputComponent } from '../aon-block-input/aon-block-input.component';
@@ -81,9 +81,20 @@ export class AonNodeComponent implements OnInit {
   @ViewChild('earliestStartInput') earliestStartInput: AonBlockInputComponent;
 
   /* Inputs, outputs and hostbindings */
-  @Input() aonData?: AoNData;
+  private _aonData?: AoNData;
+  @Input()
+  public get aonData(): AoNData {
+    return this._aonData;
+  }
+  public set aonData(value: AoNData) {
+    if (!isEqual(value, this.aonData)) {
+      this.form.patchValue(value);
+      this._aonData = value;
+    }
+  }
   @Input() isConnectionMode: boolean = false;
   @HostBinding('class.selected') @Input() isSelected: boolean = false;
+  @HostBinding('class.critical') @Input() isCritical: boolean;
   @HostBinding('class.selected-in-connection')
   @Input()
   isSelectedInConnectionMode: boolean = false;
@@ -107,10 +118,6 @@ export class AonNodeComponent implements OnInit {
   @HostBinding('class.invalid')
   public get isInvalid(): boolean {
     return this.form.invalid && !this.isBeingEdited;
-  }
-  @HostBinding('class.critical')
-  public get isCritical(): boolean {
-    return this.form.valid && this.aonData.float === 0 && !this.isSelected;
   }
 
   @Output() valueChanges = new EventEmitter<NodeData>();
@@ -178,6 +185,7 @@ export class AonNodeComponent implements OnInit {
       .pipe(
         distinctUntilChanged(isEqual),
         debounceTime(this.config.formDebounceTime),
+        skip(1),
         untilDestroyed(this)
       )
       .subscribe((aonData: AoNData) =>
