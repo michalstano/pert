@@ -91,6 +91,18 @@ const getAreConnectedNodesCorrect = (
   return true;
 };
 
+const getIsOnlyOneLastNode = (connectedNodes: Node[], links: Edge[]) => {
+  const lastNodes = connectedNodes.filter(node =>
+    links.every(({ source }) => source !== node.id)
+  );
+
+  if (lastNodes.length === 1) {
+    return +lastNodes[0].data.aonData.float === 0;
+  }
+
+  return false;
+};
+
 /* getIsGraphCorrect */
 
 export const getIsGraphCorrect = (
@@ -105,12 +117,21 @@ export const getIsGraphCorrect = (
   const areAllConnectedNodesValid = getAreAllConnectedNodesValid(
     connectedNodes
   );
+  const isOnlyOneLastNode = getIsOnlyOneLastNode(connectedNodes, links);
   const areConnectedNodesCorrect = getAreConnectedNodesCorrect(
     connectedNodes,
     nodesEntities,
     links
   );
-  const result = areAllNodesConnected && areAllConnectedNodesValid;
+
+  const rules: boolean[] = [
+    areAllNodesConnected,
+    areAllConnectedNodesValid,
+    isOnlyOneLastNode,
+    areConnectedNodesCorrect
+  ];
+
+  const result = rules.every(r => !!r);
 
   return areNodesAndLinks ? result : undefined;
 };

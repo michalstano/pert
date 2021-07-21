@@ -70,6 +70,9 @@ import { AoNData } from '../+state/sandbox.model';
               [isSelectedInConnectionMode]="
                 sandboxFacade.getIsConnectingById(node.id) | async
               "
+              [isCritical]="
+                sandboxFacade.getIsNodeInCriticalPath(node.id) | async
+              "
               (valueChanges)="updateNodeValue(node.id, $event)"
             ></xhtml:div>
           </svg:foreignObject>

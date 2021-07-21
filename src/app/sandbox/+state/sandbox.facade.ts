@@ -61,4 +61,10 @@ export class SandboxFacade {
       SandboxSelectors.selectIsConnectingById({ id: nodeId })
     );
   }
+
+  getIsNodeInCriticalPath(nodeId: string): Observable<boolean> {
+    return this.store.select(
+      SandboxSelectors.selectIsNodeInCriticalPath({ id: nodeId })
+    );
+  }
 }
