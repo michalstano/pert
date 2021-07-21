@@ -125,8 +125,12 @@ const selectAreNodesAndLinks = createSelector(
 const selectIsPossibleToRemoveItem = createSelector(
   selectIsConnectionMode,
   selectSelectedNodeId,
-  (isConnectionMode: boolean, selectedNodeId: string | null) =>
-    !isConnectionMode && !!selectedNodeId
+  selectIsEditMode,
+  (
+    isConnectionMode: boolean,
+    selectedNodeId: string | null,
+    isEditMode: boolean
+  ) => !isConnectionMode && !!selectedNodeId && !isEditMode
 );
 
 const selectIsPossibleEnableConnectionMode = createSelector(
