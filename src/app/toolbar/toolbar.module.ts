@@ -6,19 +6,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { EffectsModule } from '@ngrx/effects';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ToolbarEffects } from './+state/toolbar.effects';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
 import { GraphIndicatorComponent } from './graph-indicator/graph-indicator.component';
+import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
 
 @NgModule({
   declarations: [
     ToolbarComponent,
     ExportDialogComponent,
     ImportDialogComponent,
-    GraphIndicatorComponent
+    GraphIndicatorComponent,
+    ChartDialogComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ import { GraphIndicatorComponent } from './graph-indicator/graph-indicator.compo
     MatButtonModule,
     MatDialogModule,
     MatInputModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   exports: [ToolbarComponent]

@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'app-graph-indicator',
   template: `
-    <!-- <mat-icon class="check-icon">check</mat-icon> -->
     <ng-container [ngSwitch]="isGraphCorrect">
       <ng-container *ngSwitchCase="true">
         <mat-icon class="correct-icon">check</mat-icon>

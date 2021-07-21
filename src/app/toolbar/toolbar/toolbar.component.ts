@@ -7,6 +7,7 @@ import { ToolbarActions } from '../+state/toolbar.actions';
 import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
 import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
 import { PortData } from '../../sandbox/+state/sandbox.model';
+import { ChartDialogComponent } from '../chart-dialog/chart-dialog.component';
 
 @UntilDestroy()
 @Component({
@@ -14,11 +15,18 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
   template: `
     <svg-icon key="agh-logo" class="agh-logo"></svg-icon>
     <div class="line"></div>
-    <button mat-icon-button (click)="dispatchAddAoNButtonClicked()">
+    <button
+      mat-icon-button
+      matTooltip="Stwórz węzeł"
+      matTooltipPosition="after"
+      (click)="dispatchAddAoNButtonClicked()"
+    >
       <svg-icon key="add-aon-block"></svg-icon>
     </button>
     <button
       mat-icon-button
+      matTooltip="Usuń węzeł/połączenie"
+      matTooltipPosition="after"
       [disabled]="(sandboxFacade.isPossibleToRemoveItem$ | async) === false"
       (click)="dispatchRemoveItemButtonClicked()"
     >
@@ -26,37 +34,57 @@ import { PortData } from '../../sandbox/+state/sandbox.model';
     </button>
     <button
       mat-icon-button
+      matTooltip="Połącz węzły"
+      matTooltipPosition="after"
       [disabled]="!(sandboxFacade.isPossibleToEnableConnectionMode$ | async)"
       (click)="dispatchConnectNodesButtonClicked()"
     >
       <mat-icon>compare_arrows</mat-icon>
     </button>
     <div class="line"></div>
-    <button mat-icon-button (click)="importButtonClicked()">
+    <button
+      mat-icon-button
+      matTooltip="Importuj dane"
+      matTooltipPosition="after"
+      (click)="importButtonClicked()"
+    >
       <mat-icon>file_download</mat-icon>
     </button>
     <button
       mat-icon-button
+      matTooltip="Eksportuj dane"
+      matTooltipPosition="after"
       [disabled]="!(sandboxFacade.isPortData$ | async)"
       (click)="exportButtonClicked()"
     >
       <mat-icon>file_upload</mat-icon>
     </button>
-    <div
-      *ngIf="(sandboxFacade.isGraphCorrect$ | async) !== undefined"
-      class="down"
+    <div class="line"></div>
+    <button
+      mat-icon-button
+      matTooltip="Informacje"
+      matTooltipPosition="after"
+      (click)="infoButtonClicked()"
     >
-      <button
-        *ngIf="sandboxFacade.isGraphCorrect$ | async"
-        mat-icon-button
-        (click)="exportButtonClicked()"
+      <mat-icon>info</mat-icon>
+      <div
+        *ngIf="(sandboxFacade.isGraphCorrect$ | async) !== undefined"
+        class="down"
       >
-        <mat-icon>delete</mat-icon>
-      </button>
-      <app-graph-indicator
-        [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
-      ></app-graph-indicator>
-    </div>
+        <button
+          *ngIf="sandboxFacade.isGraphCorrect$ | async"
+          mat-icon-button
+          matTooltip="Podejrzyj wykres Gantta"
+          matTooltipPosition="after"
+          (click)="generateChartButtonClicked()"
+        >
+          <mat-icon>bar_chart</mat-icon>
+        </button>
+        <app-graph-indicator
+          [isGraphCorrect]="sandboxFacade.isGraphCorrect$ | async"
+        ></app-graph-indicator>
+      </div>
+    </button>
   `,
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -108,5 +136,13 @@ export class ToolbarComponent {
           this.store.dispatch(ToolbarActions.importButtonClicked({ result }));
         }
       });
+  }
+
+  infoButtonClicked(): void {}
+
+  generateChartButtonClicked(): void {
+    this.dialog.open(ChartDialogComponent, {
+      panelClass: 'dialog'
+    });
   }
 }
