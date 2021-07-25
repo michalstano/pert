@@ -1,11 +1,12 @@
 import { Dictionary } from '@ngrx/entity';
 import { Edge, Node } from '@swimlane/ngx-graph';
+import { difference } from 'lodash';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
 import { ConnectionProcess, EscapeEvent, PortData } from './sandbox.model';
-import { getIsGraphCorrect } from './graph-correctness';
+import { getAreSourceNodesCorrect } from './graph-correctness';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
   SANDBOX_FEATURE_KEY
@@ -152,7 +153,7 @@ const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
       links: Edge[]
     ) => {
       const isInCriticalPath = ({ data }: Node): boolean =>
-        data.isValid && +data.aonData.float === 0;
+        data.isValid && data.aonData.float === 0;
 
       const isNodeSelected: boolean = selectedNodeId === node.id;
       const previousNodes: Node[] = links
@@ -163,9 +164,7 @@ const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
         ({ source, target }) => node.id === target || node.id === source
       );
       const isPreviousNodeInCriticalPath: boolean = !!previousNodes.length
-        ? previousNodes.some(previousNode => {
-            isInCriticalPath(previousNode);
-          })
+        ? previousNodes.some(previousNode => isInCriticalPath(previousNode))
         : isNodeConnected;
 
       return (
@@ -178,12 +177,99 @@ const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
 
 /* graph correctness */
 
-const selectIsGraphCorrect = createSelector(
-  selectAreNodesAndLinks,
-  selectNodes,
+const selectConnectedNodes = createSelector(
   selectNodeEntities,
   selectLinks,
-  getIsGraphCorrect
+  (nodesEntities: Dictionary<Node>, links: Edge[]) => {
+    const connectedNodeIdsSet = new Set<Node>();
+
+    links.forEach(({ source, target }) => {
+      const sourceNode = nodesEntities[source];
+      const targetNode = nodesEntities[target];
+
+      if (sourceNode && targetNode) {
+        connectedNodeIdsSet.add(sourceNode);
+        connectedNodeIdsSet.add(targetNode);
+      }
+    });
+
+    const connectedNodeIds: Node[] = Array.from(connectedNodeIdsSet);
+
+    return connectedNodeIds;
+  }
+);
+
+const selectAreAllNodesConnected = createSelector(
+  selectNodes,
+  selectConnectedNodes,
+  (nodes: Node[], connectedNodes: Node[]) => {
+    const connectedNodeIds: string[] = connectedNodes.map(({ id }) => id);
+    const nodesIds: string[] = nodes.map(({ id }) => id);
+
+    const areAllNodesConnected = !difference(nodesIds, connectedNodeIds).length;
+
+    return areAllNodesConnected;
+  }
+);
+
+const selectAreAllConnectedNodesValid = createSelector(
+  selectConnectedNodes,
+  (connectedNodes: Node[]) => connectedNodes.every(node => node.data.isValid)
+);
+
+const selectAreConnectedNodesCorrect = createSelector(
+  selectConnectedNodes,
+  selectNodeEntities,
+  selectLinks,
+  (connectedNodes: Node[], nodesEntities: Dictionary<Node>, links: Edge[]) => {
+    const areNodesCorrect = connectedNodes.every(currentNode => {
+      return getAreSourceNodesCorrect(links, nodesEntities, currentNode);
+    });
+
+    return areNodesCorrect;
+  }
+);
+
+const selectIsOnlyOneLastNode = createSelector(
+  selectConnectedNodes,
+  selectLinks,
+  (connectedNodes: Node[], links: Edge[]) => {
+    const lastNodes = connectedNodes.filter(node =>
+      links.every(({ source }) => source !== node.id)
+    );
+
+    if (lastNodes.length === 1) {
+      return lastNodes[0].data?.aonData?.float === 0;
+    }
+
+    return false;
+  }
+);
+
+const selectIsGraphCorrect = createSelector(
+  selectAreNodesAndLinks,
+  selectAreAllNodesConnected,
+  selectAreAllConnectedNodesValid,
+  selectIsOnlyOneLastNode,
+  selectAreConnectedNodesCorrect,
+  (
+    areNodesAndLinks: boolean,
+    areAllNodesConnected: boolean,
+    areAllConnectedNodesValid: boolean,
+    isOnlyOneLastNode: boolean,
+    areConnectedNodesCorrect: boolean
+  ) => {
+    const rules: boolean[] = [
+      areAllNodesConnected,
+      areAllConnectedNodesValid,
+      isOnlyOneLastNode,
+      areConnectedNodesCorrect
+    ];
+
+    const result = rules.every(r => !!r);
+
+    return areNodesAndLinks ? result : undefined;
+  }
 );
 
 export const SandboxSelectors = {

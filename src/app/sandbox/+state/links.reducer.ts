@@ -51,7 +51,7 @@ const reducer = createReducer(
         id: connection.firstId + '-' + connection.secondId,
         source: connection.firstId,
         target: connection.secondId,
-        label: 'test'
+        label: 'link'
       } as Edge;
       return adapter.upsertOne(newLink, { ...state, connection: null });
     }

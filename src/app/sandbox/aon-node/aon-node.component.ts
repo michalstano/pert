@@ -17,6 +17,7 @@ import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
 import { correctNodeValidator } from './aon-node.validators';
 import { AoNData } from '../+state/sandbox.model';
 import { AonBlockInputComponent } from '../aon-block-input/aon-block-input.component';
+import { convertAoNData } from './aon-node.utils';
 
 export interface NodeData {
   aonData: AoNData;
@@ -189,7 +190,10 @@ export class AonNodeComponent implements OnInit {
         untilDestroyed(this)
       )
       .subscribe((aonData: AoNData) =>
-        this.valueChanges.emit({ aonData, isValid: this.form.valid })
+        this.valueChanges.emit({
+          aonData: convertAoNData(aonData),
+          isValid: this.form.valid
+        })
       );
   }
 
