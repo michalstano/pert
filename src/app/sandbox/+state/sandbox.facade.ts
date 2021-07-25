@@ -54,17 +54,17 @@ export class SandboxFacade {
 
   getNodeById = (nodeId: string): Observable<Node | null> => {
     return this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));
-  };
+  }
 
   getIsConnectingById = (nodeId: string): Observable<boolean> => {
     return this.store.select(
       SandboxSelectors.selectIsConnectingById({ id: nodeId })
     );
-  };
+  }
 
   getIsNodeInCriticalPath = (nodeId: string): Observable<boolean> => {
     return this.store.select(
       SandboxSelectors.selectIsNodeInCriticalPath({ id: nodeId })
     );
-  };
+  }
 }
