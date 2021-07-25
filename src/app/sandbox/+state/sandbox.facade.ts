@@ -52,19 +52,14 @@ export class SandboxFacade {
 
   constructor(private store: Store<any>) {}
 
-  getNodeById(nodeId: string): Observable<Node | null> {
-    return this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));
-  }
+  getNodeById = (nodeId: string): Observable<Node | null> =>
+    this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));
 
-  getIsConnectingById(nodeId: string): Observable<boolean> {
-    return this.store.select(
-      SandboxSelectors.selectIsConnectingById({ id: nodeId })
-    );
-  }
+  getIsConnectingById = (nodeId: string): Observable<boolean> =>
+    this.store.select(SandboxSelectors.selectIsConnectingById({ id: nodeId }));
 
-  getIsNodeInCriticalPath(nodeId: string): Observable<boolean> {
-    return this.store.select(
+  getIsNodeInCriticalPath = (nodeId: string): Observable<boolean> =>
+    this.store.select(
       SandboxSelectors.selectIsNodeInCriticalPath({ id: nodeId })
     );
-  }
 }

@@ -68,10 +68,10 @@ import { AoNData } from '../+state/sandbox.model';
               "
               [isConnectionMode]="sandboxFacade.isConnectionMode$ | async"
               [isSelectedInConnectionMode]="
-                sandboxFacade.getIsConnectingById(node.id) | async
+                sandboxFacade.getIsConnectingById | mapper: node.id | async
               "
               [isCritical]="
-                sandboxFacade.getIsNodeInCriticalPath(node.id) | async
+                sandboxFacade.getIsNodeInCriticalPath | mapper: node.id | async
               "
               (valueChanges)="updateNodeValue(node.id, $event)"
             ></xhtml:div>

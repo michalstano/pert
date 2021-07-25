@@ -163,7 +163,9 @@ const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
         ({ source, target }) => node.id === target || node.id === source
       );
       const isPreviousNodeInCriticalPath: boolean = !!previousNodes.length
-        ? previousNodes.some(previousNode => isInCriticalPath(previousNode))
+        ? previousNodes.some(previousNode => {
+            isInCriticalPath(previousNode);
+          })
         : isNodeConnected;
 
       return (
