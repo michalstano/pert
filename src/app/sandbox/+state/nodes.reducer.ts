@@ -4,6 +4,7 @@ import { Node } from '@swimlane/ngx-graph';
 import { SandboxActions } from './sandbox.actions';
 import { ToolbarActions } from '../../toolbar/+state/toolbar.actions';
 import { nanoid } from '../../shared/utils/id-generator';
+import { AoNData } from './sandbox.model';
 
 export const NODES_FEATURE_KEY = 'nodes';
 
@@ -52,7 +53,17 @@ const reducer = createReducer(
   on(ToolbarActions.addAoNButtonClicked, (state: NodesState) => {
     const newNode = {
       id: nanoid(),
-      label: 'NEW'
+      label: 'NEW',
+      data: {
+        aonData: {
+          earliestStart: 0,
+          duration: 0,
+          earliestFinish: 0,
+          latestStart: 0,
+          float: 0,
+          latestFinish: 0
+        } as AoNData
+      }
     } as Node;
     return adapter.addOne(newNode, {
       ...state,

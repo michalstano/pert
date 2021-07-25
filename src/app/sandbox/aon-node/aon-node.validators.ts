@@ -1,6 +1,7 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ValidationErrors } from '@ngneat/reactive-forms/lib/types';
 import { AoNData } from '../+state/sandbox.model';
+import { convertAoNData } from './aon-node.utils';
 
 export function correctNodeValidator(): ValidatorFn {
   return (form: AbstractControl): ValidationErrors | null => {
@@ -11,16 +12,16 @@ export function correctNodeValidator(): ValidatorFn {
       latestStart,
       float,
       latestFinish
-    }: AoNData = form.value;
+    }: AoNData = convertAoNData(form.value);
 
     const rules = [
-      +earliestStart + +duration === +earliestFinish,
-      +latestFinish - +duration === +latestStart,
-      +latestFinish - +float === +earliestFinish,
-      +earliestStart < +earliestFinish,
-      +latestStart < +latestFinish,
-      +latestStart >= +earliestStart,
-      +latestFinish >= +earliestFinish
+      earliestStart + duration === earliestFinish,
+      latestFinish - duration === latestStart,
+      latestFinish - float === earliestFinish,
+      earliestStart < earliestFinish,
+      latestStart < latestFinish,
+      latestStart >= earliestStart,
+      latestFinish >= earliestFinish
     ];
 
     if (rules.every(r => !!r)) {
