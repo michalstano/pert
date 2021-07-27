@@ -51,6 +51,7 @@
     "@ngrx/entity": "^10.0.1",
     "@ngrx/store": "^10.0.1",
     "@ngrx/store-devtools": "^10.0.1",
+    "@swimlane/ngx-charts": "^18.0.1",
     "@swimlane/ngx-graph": "^7.2.0",
     "@types/d3-dispatch": "^2.0.0",
     "@types/d3-drag": "^2.0.0",

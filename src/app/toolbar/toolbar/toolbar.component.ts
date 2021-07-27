@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { HotToastService } from '@ngneat/hot-toast';
+import { take } from 'rxjs/operators';
 import { SandboxFacade } from '../../sandbox/+state/sandbox.facade';
 import { ToolbarActions } from '../+state/toolbar.actions';
 import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
@@ -157,8 +158,15 @@ export class ToolbarComponent {
   }
 
   generateChartButtonClicked(): void {
-    this.dialog.open(ChartDialogComponent, {
-      panelClass: 'dialog'
-    });
+    this.sandboxFacade.chartItems$.pipe(take(1)).subscribe(chartItems =>
+      this.dialog.open(ChartDialogComponent, {
+        panelClass: 'dialog',
+        width: '50%',
+        height: '50%',
+        data: {
+          results: chartItems
+        }
+      })
+    );
   }
 }

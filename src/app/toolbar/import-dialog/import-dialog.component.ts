@@ -7,9 +7,11 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PortData } from 'src/app/sandbox/+state/sandbox.model';
 import { correctPortData, requiredFileType } from './import-dialog.validators';
 import { Validators } from '@angular/forms';
+import { PortData } from '../../sandbox/+state/sandbox.model';
+import { convertAoNData } from '../../sandbox/aon-node/aon-node.utils';
+
 interface ControlData {
   result: PortData;
   file: File;
@@ -81,10 +83,14 @@ export class ImportDialogComponent implements OnInit {
   private handleFileReaderChanges(): void {
     this.fileReader.onloadend = () => {
       const data = JSON.parse(this.fileReader.result as string) as PortData;
+      const nodes = data.nodes.map(node => ({
+        ...node,
+        data: { ...node.data, aonData: convertAoNData(node.data.aonData) }
+      }));
       this.formGroup.patchValue({
         result: {
           links: data.links,
-          nodes: data.nodes
+          nodes
         }
       });
       this.cdr.markForCheck();

@@ -1,0 +1,12 @@
+:host {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: 1fr auto;
+}
+
+.mat-dialog-content {
+  overflow: hidden;
+  padding: 0;
+  margin: 0 1rem;
+}

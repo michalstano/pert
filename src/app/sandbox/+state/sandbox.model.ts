@@ -20,6 +20,15 @@ export interface PortData {
   links: Edge[];
 }
 
+export interface ChartSeriesItem {
+  name: string;
+  value: number;
+}
+export interface ChartItem {
+  name: string;
+  series: ChartSeriesItem[];
+}
+
 export enum EscapeEvent {
   connectionMode = 'CONNECTION_MODE',
   editMode = 'EDIT_MODE',
