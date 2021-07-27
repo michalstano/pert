@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Node, Edge } from '@swimlane/ngx-graph';
 import { Observable } from 'rxjs';
-import { ConnectionProcess, EscapeEvent, PortData } from './sandbox.model';
+import {
+  ChartItem,
+  ConnectionProcess,
+  EscapeEvent,
+  PortData
+} from './sandbox.model';
 import { SandboxSelectors } from './sandbox.selectors';
 
 @Injectable({
@@ -10,6 +15,9 @@ import { SandboxSelectors } from './sandbox.selectors';
 })
 export class SandboxFacade {
   nodes$: Observable<Node[]> = this.store.select(SandboxSelectors.selectNodes);
+  chartItems$: Observable<ChartItem[]> = this.store.select(
+    SandboxSelectors.selectChartItems
+  );
   selectedNodeId$: Observable<string | null> = this.store.select(
     SandboxSelectors.selectSelectedNodeId
   );
@@ -54,17 +62,17 @@ export class SandboxFacade {
 
   getNodeById = (nodeId: string): Observable<Node | null> => {
     return this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));
-  }
+  };
 
   getIsConnectingById = (nodeId: string): Observable<boolean> => {
     return this.store.select(
       SandboxSelectors.selectIsConnectingById({ id: nodeId })
     );
-  }
+  };
 
   getIsNodeInCriticalPath = (nodeId: string): Observable<boolean> => {
     return this.store.select(
       SandboxSelectors.selectIsNodeInCriticalPath({ id: nodeId })
     );
-  }
+  };
 }

@@ -1,11 +1,17 @@
 import { Dictionary } from '@ngrx/entity';
 import { Edge, Node } from '@swimlane/ngx-graph';
-import { difference } from 'lodash';
+import { difference, sortBy } from 'lodash';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { linksSelectors } from './links.reducer';
 import { nodesSelectors } from './nodes.reducer';
 import { SANDBOX_FEATURE_KEY, SandboxState } from './sandbox.reducer';
-import { ConnectionProcess, EscapeEvent, PortData } from './sandbox.model';
+import {
+  AoNData,
+  ChartItem,
+  ConnectionProcess,
+  EscapeEvent,
+  PortData
+} from './sandbox.model';
 import { getAreSourceNodesCorrect } from './graph-correctness';
 
 const selectSandboxState = createFeatureSelector<SandboxState>(
@@ -27,6 +33,32 @@ const selectLinksState = createSelector(
 /* nodes */
 
 const selectNodes = createSelector(selectNodesState, nodesSelectors.selectAll);
+
+const selectChartItems = createSelector(selectNodes, (nodes: Node[]) =>
+  sortBy(nodes, [
+    'data.aonData.earliestStart',
+    'data.aonData.latestFinish'
+  ]).map(({ data }) => {
+    const { name, earliestStart, float, duration }: AoNData = data.aonData;
+    return {
+      name,
+      series: [
+        {
+          name: 'Transparent',
+          value: earliestStart
+        },
+        {
+          name: 'Float',
+          value: duration
+        },
+        {
+          name: 'Extra time',
+          value: float
+        }
+      ]
+    } as ChartItem;
+  })
+);
 
 const selectSelectedNodeId = createSelector(
   selectNodesState,
@@ -274,6 +306,7 @@ const selectIsGraphCorrect = createSelector(
 
 export const SandboxSelectors = {
   selectNodes,
+  selectChartItems,
   selectSelectedNodeId,
   selectEditedNodeId,
   selectIsEditMode,

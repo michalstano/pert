@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EffectsModule } from '@ngrx/effects';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ToolbarEffects } from './+state/toolbar.effects';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
@@ -34,7 +35,8 @@ import { InfoWindowComponent } from './info-window/info-window.component';
     MatDialogModule,
     MatInputModule,
     MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxChartsModule
   ],
   exports: [ToolbarComponent]
 })
