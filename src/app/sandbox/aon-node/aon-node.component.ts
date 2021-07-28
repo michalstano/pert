@@ -93,12 +93,12 @@ export class AonNodeComponent implements OnInit {
       this._aonData = value;
     }
   }
-  @Input() isConnectionMode: boolean = false;
-  @HostBinding('class.selected') @Input() isSelected: boolean = false;
+  @Input() isConnectionMode = false;
+  @HostBinding('class.selected') @Input() isSelected = false;
   @HostBinding('class.critical') @Input() isCritical: boolean;
   @HostBinding('class.selected-in-connection')
   @Input()
-  isSelectedInConnectionMode: boolean = false;
+  isSelectedInConnectionMode = false;
   @HostBinding('class.edit')
   @Input()
   get isBeingEdited(): boolean {
@@ -127,7 +127,7 @@ export class AonNodeComponent implements OnInit {
   private config = {
     formDebounceTime: 200
   };
-  private _isBeingEdited: boolean = false;
+  private _isBeingEdited = false;
   private isDashboardNode: boolean; /* to distuingish dashboard node and minimap node */
 
   /* Form controls */

@@ -5,7 +5,7 @@
     "start": "ng serve",
     "test": "ng test",
     "test:e2e": "cypress open",
-    "lint": "ng lint",
+    "lint": "eslint ./**/*.{js,ts}",
     "generate-icons": "svg-to-ts"
   },
   "husky": {
@@ -15,14 +15,12 @@
     }
   },
   "lint-staged": {
-    "src/**/*.ts": [
+    "**/*.{js,ts}": [
       "prettier --write",
-      "prettier-tslint fix",
-      "git add"
+      "prettier-eslint"
     ],
     "src/**/*.{json,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "src/**/*.*css": [
       "stylelint --fix",
@@ -74,17 +72,21 @@
     "@angular/cli": "~10.0.0",
     "@angular/compiler-cli": "~10.0.0",
     "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.5",
+    "@typescript-eslint/parser": "^4.28.5",
     "codelyzer": "^6.0.0-next.1",
     "cypress": "^8.0.0",
     "cypress-real-events": "^1.5.0",
+    "eslint": "^7.31.0",
+    "eslint-plugin-cypress": "^2.11.3",
     "husky": "^4.2.5",
-    "lint-staged": "^10.0.7",
+    "lint-staged": "^11.0.1",
     "prettier": "^1.19.1",
-    "prettier-tslint": "^0.4.2",
+    "prettier-eslint": "^13.0.0",
+    "prettier-eslint-cli": "^5.0.1",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^20.0.0",
     "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
     "typescript": "~3.9.5"
   },
   "svg-to-ts": {

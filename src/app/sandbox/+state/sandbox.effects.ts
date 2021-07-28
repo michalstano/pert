@@ -30,12 +30,12 @@ export class SandboxEffects {
         if (isAbleToMakeConnection) {
           return SandboxActions.makeConnectionBetweenTwoNodes({
             connection: {
-              firstId: connection!.firstId,
+              firstId: connection.firstId,
               secondId: nodeId
             }
           });
         }
-        if (!!connection) {
+        if (connection) {
           return SandboxActions.selectFirstNodeToConnection({ nodeId });
         }
 

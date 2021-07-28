@@ -39,8 +39,8 @@ export class AonBlockInputComponent {
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
   @Input() control: FormControl<string | number>;
   @Input() isBeingEdited: boolean;
-  @Input() isFirstItem: boolean = false;
-  @Input() isTextField: boolean = false;
+  @Input() isFirstItem = false;
+  @Input() isTextField = false;
 
   focus(): void {
     this.input.nativeElement.focus();

@@ -116,7 +116,7 @@ export class SandboxPageComponent implements OnInit {
     this.store.dispatch(SandboxActions.enterClicked());
   }
 
-  constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
+  constructor(public sandboxFacade: SandboxFacade, private store: Store) {}
 
   ngOnInit(): void {
     this.nodes$ = this.sandboxFacade.nodes$.pipe(

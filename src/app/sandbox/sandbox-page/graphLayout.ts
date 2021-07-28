@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Graph, Layout, Edge, Node, NodePosition } from '@swimlane/ngx-graph';
 import * as dagre from 'dagre';
 
@@ -63,7 +65,7 @@ export class GraphLayout implements Layout {
     this.createDagreGraph(graph);
     dagre.layout(this.dagreGraph);
     graph.edgeLabels = this.dagreGraph._edgeLabels;
-    // tslint:disable-next-line: forin
+
     for (const dagreNodeId in this.dagreGraph._nodes) {
       const dagreNode = this.dagreGraph._nodes[dagreNodeId];
       const node = graph.nodes.find(n => n.id === dagreNode.id);
@@ -140,7 +142,7 @@ export class GraphLayout implements Layout {
     });
 
     this.dagreEdges = graph.edges.map(l => {
-      let linkId: number = 1;
+      let linkId = 1;
       const newLink: any = Object.assign({}, l);
       if (!newLink.id) {
         newLink.id = linkId;
