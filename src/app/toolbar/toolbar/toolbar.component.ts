@@ -94,7 +94,7 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
 })
 export class ToolbarComponent {
   constructor(
-    private readonly store: Store<any>,
+    private readonly store: Store,
     private readonly dialog: MatDialog,
     readonly sandboxFacade: SandboxFacade,
     private readonly toast: HotToastService

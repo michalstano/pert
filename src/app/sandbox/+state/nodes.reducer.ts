@@ -19,8 +19,8 @@ export interface NodesState extends EntityState<Node> {
 
 export const nodesSelectors = {
   ...adapter.getSelectors(),
-  selectedNodeId: (state: NodesState) => state.selectedNodeId,
-  editedNodeId: (state: NodesState) => state.editedNodeId
+  selectedNodeId: (state: NodesState): string | null => state.selectedNodeId,
+  editedNodeId: (state: NodesState): string | null => state.editedNodeId
 };
 
 export const nodesInitialState: NodesState = adapter.getInitialState({

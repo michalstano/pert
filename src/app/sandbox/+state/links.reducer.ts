@@ -8,7 +8,7 @@ import { ConnectionProcess } from './sandbox.model';
 export const LINKS_FEATURE_KEY = 'links';
 
 export const adapter: EntityAdapter<Edge> = createEntityAdapter<Edge>({
-  selectId: (edge: Edge) => edge.id!
+  selectId: (edge: Edge) => edge.id
 });
 
 export interface LinksState extends EntityState<Edge> {
@@ -18,8 +18,8 @@ export interface LinksState extends EntityState<Edge> {
 
 export const linksSelectors = {
   ...adapter.getSelectors(),
-  connection: (state: LinksState) => state.connection,
-  selectedLinkId: (state: LinksState) => state.selectedLinkId
+  connection: (state: LinksState): ConnectionProcess | null => state.connection,
+  selectedLinkId: (state: LinksState): string | null => state.selectedLinkId
 };
 
 export const linksInitialState: LinksState = adapter.getInitialState({

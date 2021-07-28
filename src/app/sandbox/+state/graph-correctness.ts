@@ -22,7 +22,7 @@ export const getAreSourceNodesCorrect = (
 
     return rules.every(rule => !!rule);
   });
-  const isSomeSourceNodeCorrect = !!sourceNodes.length
+  const isSomeSourceNodeCorrect = sourceNodes.length
     ? sourceNodes.some(node => {
         const nodeData: AoNData = node.data.aonData;
 

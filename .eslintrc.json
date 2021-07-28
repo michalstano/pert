@@ -1,0 +1,23 @@
+{
+  "plugins": ["cypress", "@typescript-eslint"],
+  "env": {
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "plugin:cypress/recommended",
+        "plugin:@typescript-eslint/recommended"
+      ]
+    },
+    {
+      "files": ["*.selectors.ts"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    }
+  ]
+}

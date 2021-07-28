@@ -58,7 +58,7 @@ export class SandboxFacade {
     SandboxSelectors.selectIsPossibleEnableConnectionMode
   );
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store) {}
 
   getNodeById = (nodeId: string): Observable<Node | null> => {
     return this.store.select(SandboxSelectors.selectNodeById({ id: nodeId }));

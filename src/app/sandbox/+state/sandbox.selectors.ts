@@ -130,10 +130,10 @@ const selectEscapeEvent = createSelector(
     if (isEditMode) {
       return EscapeEvent.editMode;
     }
-    if (!!selectedNodeId) {
+    if (selectedNodeId) {
       return EscapeEvent.nodeSelectionMode;
     }
-    if (!!selectedLinkId) {
+    if (selectedLinkId) {
       return EscapeEvent.linkSelectionMode;
     }
     return EscapeEvent.empty;
@@ -195,7 +195,7 @@ const selectIsNodeInCriticalPath = ({ id }: { id: string }) =>
       const isNodeConnected: boolean = links.some(
         ({ source, target }) => node.id === target || node.id === source
       );
-      const isPreviousNodeInCriticalPath: boolean = !!previousNodes.length
+      const isPreviousNodeInCriticalPath: boolean = previousNodes.length
         ? previousNodes.some(previousNode => isInCriticalPath(previousNode))
         : isNodeConnected;
 
