@@ -83,6 +83,17 @@ export class SandboxEffects {
     )
   );
 
+  handleEnterClick = createEffect(() => () =>
+    this.actions.pipe(
+      ofType(SandboxActions.enterClicked),
+      withLatestFrom(
+        this.sandboxFacade.selectedNodeId$,
+        (_, selectedNodeId: string | undefined) => selectedNodeId
+      ),
+      map(nodeId => SandboxActions.nodeEntered({ nodeId }))
+    )
+  );
+
   removeNode = createEffect(() => () =>
     this.actions.pipe(
       ofType(
