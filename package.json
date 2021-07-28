@@ -2,10 +2,9 @@
   "name": "pert",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
+    "test:e2e": "cypress open",
     "lint": "ng lint",
     "generate-icons": "svg-to-ts"
   },
@@ -76,6 +75,8 @@
     "@angular/compiler-cli": "~10.0.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0-next.1",
+    "cypress": "^8.0.0",
+    "cypress-real-events": "^1.5.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
