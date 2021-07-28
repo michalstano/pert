@@ -6,6 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { SvgIconsModule } from '@ngneat/svg-icon';
 import { HotToastModule } from '@ngneat/hot-toast';
+import { A11yModule } from '@angular/cdk/a11y';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SandboxModule } from './sandbox/sandbox.module';
@@ -23,6 +24,7 @@ import { environment } from '../environments/environment';
     SandboxModule,
     ToolbarModule,
     BrowserAnimationsModule,
+    A11yModule,
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

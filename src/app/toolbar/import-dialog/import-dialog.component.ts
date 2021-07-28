@@ -3,7 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -33,6 +34,7 @@ interface ControlData {
         Anuluj
       </button>
       <button
+        #confirmBtn
         mat-button
         class="accept-btn"
         [mat-dialog-close]="formGroup.value.result"
@@ -46,6 +48,8 @@ interface ControlData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportDialogComponent implements OnInit {
+  @ViewChild('confirmBtn') confirmButton: HTMLButtonElement;
+
   readonly formGroup = new FormGroup<ControlData>({
     result: new FormControl<PortData | undefined>(undefined, {
       validators: [correctPortData()]
@@ -94,6 +98,11 @@ export class ImportDialogComponent implements OnInit {
         }
       });
       this.cdr.markForCheck();
+      this.focusConfirmButton();
     };
+  }
+
+  private focusConfirmButton(): void {
+    this.confirmButton.focus();
   }
 }

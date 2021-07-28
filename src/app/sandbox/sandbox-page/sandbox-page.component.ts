@@ -111,6 +111,11 @@ export class SandboxPageComponent implements OnInit {
     this.store.dispatch(SandboxActions.deleteClicked());
   }
 
+  @HostListener('document:keydown.enter', ['$event'])
+  onKeydownEnterHandler(): void {
+    this.store.dispatch(SandboxActions.enterClicked());
+  }
+
   constructor(public sandboxFacade: SandboxFacade, private store: Store<any>) {}
 
   ngOnInit(): void {

@@ -82,6 +82,8 @@ const escapeClicked = createAction('[Sandobox] Escape clicked');
 
 const deleteClicked = createAction('[Sandbox] Delete clicked');
 
+const enterClicked = createAction('[Sandbox] Enter clicked');
+
 export const SandboxActions = {
   nodeClicked,
   nodeDoubleClicked,
@@ -102,5 +104,6 @@ export const SandboxActions = {
   linkRemoved,
   linksRemoved,
   linkSelectionExited,
-  deleteClicked
+  deleteClicked,
+  enterClicked
 };
