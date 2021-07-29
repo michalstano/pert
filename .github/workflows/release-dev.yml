@@ -1,6 +1,7 @@
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - master
 name: Release on Dev
 jobs:
   Deploy-to-dev:
