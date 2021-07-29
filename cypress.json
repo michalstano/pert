@@ -1,5 +1,6 @@
 {
-    "baseUrl": "http://www.dev.pert.mstano.eu",
-    "viewportWidth": 1920,
-    "viewportHeight": 1080
+  "baseUrl": "http://www.dev.pert.mstano.eu",
+  "viewportWidth": 1920,
+  "viewportHeight": 1080,
+  "testFiles": "*.spec.ts"
 }

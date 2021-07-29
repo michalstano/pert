@@ -23,6 +23,7 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       matTooltip="Stwórz węzeł"
       matTooltipPosition="after"
       (click)="dispatchAddAoNButtonClicked()"
+      data-test="create-node-btn"
     >
       <svg-icon key="add-aon-block"></svg-icon>
     </button>
@@ -41,6 +42,7 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       matTooltipPosition="after"
       [disabled]="!(sandboxFacade.isPossibleToEnableConnectionMode$ | async)"
       (click)="dispatchConnectNodesButtonClicked()"
+      data-test="connect-nodes-btn"
     >
       <mat-icon>compare_arrows</mat-icon>
     </button>

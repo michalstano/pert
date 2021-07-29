@@ -60,6 +60,7 @@ import { AoNData } from '../+state/sandbox.model';
             <xhtml:div
               aon-node
               cdkTrapFocus
+              class="aon-node"
               [cdkTrapFocusAutoCapture]="true"
               [aonData]="node.data?.aonData"
               [isSelected]="(sandboxFacade.selectedNodeId$ | async) === node.id"

@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve",
+    "build": "ng build",
     "test": "ng test",
-    "test:e2e": "cypress open",
+    "test-e2e": "cypress open",
+    "test-e2e:local": "cypress open -c baseUrl=http://localhost:4200",
     "lint": "eslint ./**/*.{js,ts}",
     "generate-icons": "svg-to-ts"
   },
@@ -76,7 +78,7 @@
     "@typescript-eslint/parser": "^4.28.5",
     "codelyzer": "^6.0.0-next.1",
     "cypress": "^8.0.0",
-    "cypress-real-events": "^1.5.0",
+    "cypress-real-events": "^1.5.1",
     "eslint": "^7.31.0",
     "eslint-plugin-cypress": "^2.11.3",
     "husky": "^4.2.5",

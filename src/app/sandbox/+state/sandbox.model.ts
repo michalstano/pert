@@ -1,13 +1,23 @@
 import { Edge, Node } from '@swimlane/ngx-graph';
 
 export interface AoNData {
-  earliestStart: number;
-  duration: number;
-  earliestFinish: number;
-  name: string;
-  latestStart: number;
-  float: number;
-  latestFinish: number;
+  earliestStart: number | undefined;
+  duration: number | undefined;
+  earliestFinish: number | undefined;
+  name: string | undefined;
+  latestStart: number | undefined;
+  float: number | undefined;
+  latestFinish: number | undefined;
+}
+
+export interface AoNDataString {
+  earliestStart: string | undefined;
+  duration: string | undefined;
+  earliestFinish: string | undefined;
+  name: string | undefined;
+  latestStart: string | undefined;
+  float: string | undefined;
+  latestFinish: string | undefined;
 }
 
 export interface ConnectionProcess {

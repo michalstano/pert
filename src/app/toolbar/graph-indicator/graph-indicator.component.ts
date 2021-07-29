@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   template: `
     <ng-container [ngSwitch]="isGraphCorrect">
       <ng-container *ngSwitchCase="true">
-        <mat-icon class="correct-icon">check</mat-icon>
+        <mat-icon class="correct-icon" data-test="correct-icon">check</mat-icon>
         <p>Poprawny</p>
       </ng-container>
       <ng-container *ngSwitchCase="false">

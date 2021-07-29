@@ -11,7 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { correctPortData, requiredFileType } from './import-dialog.validators';
 import { Validators } from '@angular/forms';
 import { PortData } from '../../sandbox/+state/sandbox.model';
-import { convertAoNData } from '../../sandbox/aon-node/aon-node.utils';
+import { convertAoNDataToNumbers } from '../../sandbox/aon-node/aon-node.utils';
 
 interface ControlData {
   result: PortData;
@@ -89,7 +89,10 @@ export class ImportDialogComponent implements OnInit {
       const data = JSON.parse(this.fileReader.result as string) as PortData;
       const nodes = data.nodes.map(node => ({
         ...node,
-        data: { ...node.data, aonData: convertAoNData(node.data.aonData) }
+        data: {
+          ...node.data,
+          aonData: convertAoNDataToNumbers(node.data.aonData)
+        }
       }));
       this.formGroup.patchValue({
         result: {
