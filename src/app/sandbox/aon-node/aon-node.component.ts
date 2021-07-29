@@ -189,9 +189,9 @@ export class AonNodeComponent implements OnInit {
   private emitValueChanges(): void {
     this.form.value$
       .pipe(
+        skip(1),
         distinctUntilChanged(isEqual),
         debounceTime(this.config.formDebounceTime),
-        skip(1),
         untilDestroyed(this)
       )
       .subscribe((aonData: AoNDataString) => {
