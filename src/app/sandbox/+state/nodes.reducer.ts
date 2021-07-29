@@ -56,12 +56,13 @@ const reducer = createReducer(
       label: 'NEW',
       data: {
         aonData: {
-          earliestStart: 0,
-          duration: 0,
-          earliestFinish: 0,
-          latestStart: 0,
-          float: 0,
-          latestFinish: 0
+          earliestStart: undefined,
+          duration: undefined,
+          earliestFinish: undefined,
+          name: undefined,
+          latestStart: undefined,
+          float: undefined,
+          latestFinish: undefined
         } as AoNData
       }
     } as Node;

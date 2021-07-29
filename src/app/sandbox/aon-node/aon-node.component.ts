@@ -7,17 +7,20 @@ import {
   ElementRef,
   OnInit,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectorRef
 } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { isEqual } from 'lodash';
 import { debounceTime, distinctUntilChanged, skip } from 'rxjs/operators';
-import { correctNodeValidator } from './aon-node.validators';
-import { AoNData } from '../+state/sandbox.model';
+import { correctNodeValidator, requiredValidator } from './aon-node.validators';
+import { AoNData, AoNDataString } from '../+state/sandbox.model';
 import { AonBlockInputComponent } from '../aon-block-input/aon-block-input.component';
-import { convertAoNData } from './aon-node.utils';
+import {
+  convertAoNDataToNumbers,
+  convertAoNDataToStrings
+} from './aon-node.utils';
 
 export interface NodeData {
   aonData: AoNData;
@@ -89,7 +92,7 @@ export class AonNodeComponent implements OnInit {
   }
   public set aonData(value: AoNData) {
     if (!isEqual(value, this.aonData)) {
-      this.form.patchValue(value);
+      this.form.patchValue(convertAoNDataToStrings(value));
       this._aonData = value;
     }
   }
@@ -108,6 +111,8 @@ export class AonNodeComponent implements OnInit {
     if (this.isDashboardNode) {
       if (value) {
         this.focusFirstField();
+      } else {
+        this.makeAllControlsTouched();
       }
       this._isBeingEdited = value;
     }
@@ -125,35 +130,35 @@ export class AonNodeComponent implements OnInit {
 
   /* Variables */
   private config = {
-    formDebounceTime: 200
+    formDebounceTime: 100
   };
   private _isBeingEdited = false;
   private isDashboardNode: boolean; /* to distuingish dashboard node and minimap node */
 
   /* Form controls */
-  readonly earliestStartCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly earliestStartCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly durationCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly durationCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly earliestFinishCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly earliestFinishCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly nameCtrl = new FormControl<string>('name', {
-    validators: [Validators.required]
+  readonly nameCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly latestStartCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly latestStartCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly floatCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly floatCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
-  readonly latestFinishCtrl = new FormControl<number>(0, {
-    validators: [Validators.required]
+  readonly latestFinishCtrl = new FormControl<string>(undefined, {
+    validators: [requiredValidator()]
   });
 
-  form = new FormGroup<AoNData>(
+  form = new FormGroup<AoNDataString>(
     {
       earliestStart: this.earliestStartCtrl,
       duration: this.durationCtrl,
@@ -166,7 +171,7 @@ export class AonNodeComponent implements OnInit {
     { validators: [correctNodeValidator()] }
   );
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.setIsDashboardNode();
@@ -189,15 +194,22 @@ export class AonNodeComponent implements OnInit {
         skip(1),
         untilDestroyed(this)
       )
-      .subscribe((aonData: AoNData) =>
+      .subscribe((aonData: AoNDataString) => {
         this.valueChanges.emit({
-          aonData: convertAoNData(aonData),
+          aonData: convertAoNDataToNumbers(aonData),
           isValid: this.form.valid
-        })
-      );
+        });
+      });
   }
 
   private focusFirstField(): void {
     this.earliestStartInput.focus();
+  }
+
+  private makeAllControlsTouched(): void {
+    this.form.markAllAsTouched();
+    Object.keys(this.form.controls).forEach((key: string) => {
+      this.form.get(key).updateValueAndValidity();
+    });
   }
 }

@@ -21,14 +21,17 @@ import { FormControl } from '@ngneat/reactive-forms';
       [class.invalid]="control.invalid"
       (focusout)="removeSelection()"
     />
+    <!-- type submit is required in e2e tests -->
     <input
       *ngIf="isTextField"
       #input
       maxlength="10"
+      [attr.type]="isBeingEdited ? 'text' : 'submit'"
       [formControl]="control"
       [readonly]="!isBeingEdited"
       [attr.disabled]="(!isBeingEdited && !isFirstItem) || null"
       [class.invalid]="control.invalid"
+      [attr.value]="control.value"
       (focusout)="removeSelection()"
     />
   `,
