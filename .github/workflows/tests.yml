@@ -1,8 +1,21 @@
 name: Tests
 
-on: push
+on:
+  push:
+    branches-ignore:
+    - 'master'
 
 jobs:
+  units:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: npm install
+      - name: Run tests
+        run: npm test -- -u
+
   cypress-run:
     runs-on: ubuntu-latest
     steps:
