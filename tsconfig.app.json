@@ -2,13 +2,13 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": ["node", "cypress", "cypress-real-events"]
+    "types": []
   },
   "files": [
     "src/main.ts",
     "src/polyfills.ts"
   ],
   "include": [
-    "**/*.ts"
+    "src/**/*.d.ts"
   ]
 }
