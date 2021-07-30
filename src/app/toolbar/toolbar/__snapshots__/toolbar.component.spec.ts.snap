@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolbar should match snapshot 1`] = `
+<app-toolbar
+  __ngContext__={[Function LRootView]}
+  dialog={[Function Object]}
+  sandboxFacade={[Function Object]}
+  store={[Function Object]}
+  toast={[Function Object]}
+>
+  <svg-icon
+    class="agh-logo"
+    key="agh-logo"
+  /><div
+    class="line"
+  /><button
+    data-test="create-node-btn"
+    mat-icon-button=""
+    mattooltip="Stwórz węzeł"
+    mattooltipposition="after"
+  >
+    <svg-icon
+      key="add-aon-block"
+    />
+  </button><button
+    data-test="remove-btn"
+    mat-icon-button=""
+    mattooltip="Usuń węzeł/połączenie"
+    mattooltipposition="after"
+  >
+    <mat-icon>
+      delete
+    </mat-icon>
+  </button><button
+    data-test="connect-nodes-btn"
+    mat-icon-button=""
+    mattooltip="Połącz węzły"
+    mattooltipposition="after"
+  >
+    <mat-icon>
+      compare_arrows
+    </mat-icon>
+  </button><div
+    class="line"
+  /><button
+    data-test="import-btn"
+    mat-icon-button=""
+    mattooltip="Importuj dane"
+    mattooltipposition="after"
+  >
+    <mat-icon>
+      file_download
+    </mat-icon>
+  </button><button
+    data-test="export-btn"
+    mat-icon-button=""
+    mattooltip="Eksportuj dane"
+    mattooltipposition="after"
+  >
+    <mat-icon>
+      file_upload
+    </mat-icon>
+  </button><div
+    class="line"
+  /><button
+    data-test="info-btn"
+    mat-icon-button=""
+    mattooltip="Informacje"
+    mattooltipposition="after"
+  >
+    <mat-icon>
+      info
+    </mat-icon>
+  </button><div
+    class="down"
+  >
+    <button
+      data-test="chart-btn"
+      mat-icon-button=""
+      mattooltip="Podejrzyj wykres Gantta"
+      mattooltipposition="after"
+    >
+      <mat-icon>
+        bar_chart
+      </mat-icon>
+    </button>
+    <app-graph-indicator />
+  </div>
+</app-toolbar>
+`;
