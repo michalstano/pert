@@ -1,7 +1,8 @@
 name: Tests
 
-on: push
-  branches-ignore:
+on:
+  push:
+    branches-ignore:
     - 'master'
 
 jobs:
