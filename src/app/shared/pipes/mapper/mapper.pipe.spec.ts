@@ -1,5 +1,11 @@
+import { MapperPipe } from './mapper.pipe';
+
 describe('Mapper pipe', () => {
+  const mapperPipe = new MapperPipe();
   it('should return value from function', () => {
-    expect(true).toEqual(true);
+    const value = 'value';
+    const fn = (val: string) => val;
+
+    expect(mapperPipe.transform(fn, value)).toEqual(value);
   });
 });

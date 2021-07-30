@@ -1,8 +1,6 @@
 name: Tests
 
-on:
-  check_run:
-    types: created
+on: push
 
 jobs:
   cypress-run:

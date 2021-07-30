@@ -33,6 +33,7 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       matTooltipPosition="after"
       [disabled]="(sandboxFacade.isPossibleToRemoveItem$ | async) === false"
       (click)="dispatchRemoveItemButtonClicked()"
+      data-test="remove-btn"
     >
       <mat-icon>delete</mat-icon>
     </button>
@@ -51,7 +52,8 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       mat-icon-button
       matTooltip="Importuj dane"
       matTooltipPosition="after"
-      (click)="importButtonClicked()"
+      (click)="openImportDialog()"
+      data-test="import-btn"
     >
       <mat-icon>file_download</mat-icon>
     </button>
@@ -60,7 +62,8 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       matTooltip="Eksportuj dane"
       matTooltipPosition="after"
       [disabled]="!(sandboxFacade.isPortData$ | async)"
-      (click)="exportButtonClicked()"
+      (click)="openExportDialog()"
+      data-test="export-btn"
     >
       <mat-icon>file_upload</mat-icon>
     </button>
@@ -69,7 +72,8 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
       mat-icon-button
       matTooltip="Informacje"
       matTooltipPosition="after"
-      (click)="infoButtonClicked()"
+      (click)="openInfo()"
+      data-test="info-btn"
     >
       <mat-icon>info</mat-icon>
     </button>
@@ -83,6 +87,7 @@ import { InfoWindowComponent } from '../info-window/info-window.component';
         matTooltip="Podejrzyj wykres Gantta"
         matTooltipPosition="after"
         (click)="generateChartButtonClicked()"
+        data-test="chart-btn"
       >
         <mat-icon>bar_chart</mat-icon>
       </button>
@@ -114,7 +119,7 @@ export class ToolbarComponent {
     this.store.dispatch(ToolbarActions.connectNodesButtonClicked());
   }
 
-  exportButtonClicked(): void {
+  openExportDialog(): void {
     const dialogRef = this.dialog.open(ExportDialogComponent, {
       panelClass: 'dialog'
     });
@@ -130,7 +135,7 @@ export class ToolbarComponent {
       });
   }
 
-  importButtonClicked(): void {
+  openImportDialog(): void {
     const dialogRef = this.dialog.open(ImportDialogComponent, {
       panelClass: 'dialog'
     });
@@ -144,7 +149,7 @@ export class ToolbarComponent {
       });
   }
 
-  infoButtonClicked(): void {
+  openInfo(): void {
     this.toast.show(InfoWindowComponent, {
       id: 'info-window',
       dismissible: true,
