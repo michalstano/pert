@@ -1,5 +1,9 @@
 name: Tests
 
+on:
+  check_run:
+    types: created
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
