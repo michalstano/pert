@@ -2,7 +2,7 @@ name: Tests
 
 on: push
   branches-ignore:
-    - master
+    - 'master'
 
 jobs:
   units:
