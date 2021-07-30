@@ -1,4 +1,4 @@
-import { AoNData } from 'src/app/sandbox/+state/sandbox.model';
+import { AoNData } from '../../src/app/sandbox/+state/sandbox.model';
 import { dataTest } from '../support/utils';
 
 const selectors = {
