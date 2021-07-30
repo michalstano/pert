@@ -1,6 +1,8 @@
 name: Tests
 
-on: pull_request
+on:
+  check_run:
+    types: created
 
 jobs:
   cypress-run:
